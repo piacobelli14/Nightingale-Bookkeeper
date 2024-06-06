@@ -8,14 +8,18 @@
 import SwiftUI
 import SceneKit
 
-struct WatchData: Codable {
-    let devType: String
-    let devID: String
-    let assignedTo: String
-    let lastAssigned: String
-    let battery: String
+struct DeviceInfoResponse: Codable {
+    let message: String
+    let data: [WatchData]
 }
 
+struct WatchData: Codable {
+    let devID: String
+    let devType: String
+    let orgID: String
+    let assignedTo: String
+    let devBattery: String
+}
 
 struct DeviceManage: View {
     @Binding var currentView: AppView
@@ -174,6 +178,9 @@ struct DeviceManage: View {
             .onTapGesture {
                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
             }
+            .onAppear {
+                getDeviceInfo()
+            }
         }
     }
     private func deviceCell(for device: WatchData, geometry: GeometryProxy) -> some View {
@@ -204,7 +211,7 @@ struct DeviceManage: View {
                 }
             }
             
-            WatchView(devType: device.devType)
+            WatchView(devType: "AppleWatch")
 
             
             VStack {
@@ -225,14 +232,14 @@ struct DeviceManage: View {
                         .stroke(device.assignedTo != "None" ? Color(hex: 0x6BC17D).opacity(1) : Color(hex: 0xBD9B19), lineWidth: geometry.size.width * 0.004)
                 )
                 
-                let batteryStatusText = Int(device.battery) ?? 0 < 20 ? "Not Charged: " : "Charged: "
-                let batteryStatusPrimaryColor = Int(device.battery) ?? 0 < 20 ? Color(hex: 0xE54B4B).opacity(1) : Color(hex: 0x6BC17D).opacity(1)
-                let batteryStatusSecondaryColor = Int(device.battery) ?? 0 < 20 ? Color(hex: 0xE54B4B).opacity(0.1) : Color(hex: 0x5BBA6F).opacity(0.1)
+                let batteryStatusText = Int(device.devBattery) ?? 0 < 20 ? "Not Charged: " : "Charged: "
+                let batteryStatusPrimaryColor = Int(device.devBattery) ?? 0 < 20 ? Color(hex: 0xE54B4B).opacity(1) : Color(hex: 0x6BC17D).opacity(1)
+                let batteryStatusSecondaryColor = Int(device.devBattery) ?? 0 < 20 ? Color(hex: 0xE54B4B).opacity(0.1) : Color(hex: 0x5BBA6F).opacity(0.1)
                 HStack {
                     Spacer()
                     Text(batteryStatusText)
                         .font(.system(size: geometry.size.height * 0.01, weight: .heavy))
-                    Text("\(device.battery)%")
+                    Text("\(device.devBattery)%")
                         .font(.system(size: geometry.size.height * 0.01, weight: .regular))
                     Spacer()
                 }
@@ -257,6 +264,69 @@ struct DeviceManage: View {
                 .stroke(Color(hex: 0xDFE6E9).opacity(0.6), lineWidth: geometry.size.width * 0.004)
         )
         .shadow(color: .gray, radius: geometry.size.width * 0.004)
+    }
+    private func getDeviceInfo() {
+        let url = URL(string: "http://172.20.10.2:5000/get-devices")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let requestBody: [String: Any] = [
+            "orgID": authenticatedOrgID
+        ]
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: requestBody, options: [])
+        } catch {
+            self.errorMessage = "JSON serialization error: \(error.localizedDescription)"
+            print(self.errorMessage)
+            return
+        }
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    self.errorMessage = "Network error: \(error.localizedDescription)"
+                    print(self.errorMessage)
+                }
+                return
+            }
+            
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    self.errorMessage = "No data received from the server"
+                    print(self.errorMessage)
+                }
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse else {
+                DispatchQueue.main.async {
+                    self.errorMessage = "Invalid response from the server"
+                    print(self.errorMessage)
+                }
+                return
+            }
+            
+            if response.statusCode == 200 {
+                do {
+                    let decodedResponse = try JSONDecoder().decode(DeviceInfoResponse.self, from: data)
+                    DispatchQueue.main.async {
+                        self.deviceInfo = decodedResponse.data
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        self.errorMessage = "JSON decoding error: \(error.localizedDescription)"
+                        print(self.errorMessage)
+                    }
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.errorMessage = "Server error with status code: \(response.statusCode)"
+                    print(self.errorMessage)
+                }
+            }
+        }
+        .resume()
     }
 }
 
