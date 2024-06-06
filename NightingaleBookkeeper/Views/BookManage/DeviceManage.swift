@@ -32,12 +32,11 @@ struct SelectedDeviceData: Codable {
     let orgID: String
     let assignedTo: String
     let devBattery: String
-    let firstname: String?
-    let lastname: String?
-    let ptid: String?
-    let ptimage: String?
+    let firstName: String?
+    let lastName: String?
+    let ptID: String?
+    let ptImage: String?
 }
-
 
 struct DeviceManage: View {
     @Binding var currentView: AppView
