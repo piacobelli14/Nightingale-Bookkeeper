@@ -77,11 +77,23 @@ struct DeviceManage: View {
                 
                 Spacer()
                 
-                ScrollView {
-                    LazyVGrid(columns: columns, spacing: geometry.size.width * 0.05) {
-                        ForEach(deviceInfo, id: \.devID) { device in
-                            deviceCell(for: device, geometry: geometry)
+                ZStack {
+                    ScrollView {
+                        LazyVGrid(columns: columns, spacing: geometry.size.width * 0.05) {
+                            ForEach(deviceInfo, id: \.devID) { device in
+                                deviceCell(for: device, geometry: geometry)
+                            }
                         }
+                    }
+                    .opacity(!selectedDeviceID.isEmpty ? 0.2 : 1.0)
+                    
+                    if !selectedDeviceID.isEmpty {
+                        HStack {
+                            
+                        }
+                        .frame(height: geometry.size.height * 0.8)
+                        .frame(width: geometry.size.width * 0.6)
+                        .background(Color.white)
                     }
                 }
                 .frame(height: geometry.size.height * 0.82)
@@ -217,7 +229,6 @@ struct DeviceManage: View {
                 
                 WatchView(devType: "AppleWatch")
                 
-                
                 VStack {
                     HStack {
                         Spacer()
@@ -333,5 +344,6 @@ struct DeviceManage: View {
         }
         .resume()
     }
+   
 }
 
