@@ -62,6 +62,48 @@ struct DeviceManage: View {
                 Spacer()
                 
                 HStack(alignment: .center) {
+                    
+                    HStack {
+                        VStack {
+                            Button(action: {
+                                self.authenticatedUsername = ""
+                                self.currentView = .LoginAuth
+                            }) {
+                                Image(systemName: "plus.circle")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(height: geometry.size.height * 0.022)
+                                    .foregroundColor(Color.white)
+                                    .shadow(color: .gray.opacity(0.5), radius: 3, x: 0, y: 0)
+                            }
+                            
+                            Text("Add Device")
+                                .font(.system(size: geometry.size.height * 0.012, weight: .semibold))
+                                .foregroundColor(Color.white)
+                                .opacity(0.6)
+                        }
+                        .padding(.leading, geometry.size.width * 0.03)
+                        
+                        VStack {
+                            Button(action: {
+                                self.authenticatedUsername = ""
+                                self.currentView = .LoginAuth
+                            }) {
+                                Image(systemName: "minus.circle")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(height: geometry.size.height * 0.022)
+                                    .foregroundColor(Color.white)
+                                    .shadow(color: .gray.opacity(0.5), radius: 3, x: 0, y: 0)
+                            }
+                            
+                            Text("Remove Device")
+                                .font(.system(size: geometry.size.height * 0.012, weight: .semibold))
+                                .foregroundColor(Color.white)
+                                .opacity(0.6)
+                        }
+                        .padding(.leading, geometry.size.width * 0.03)
+                    }
                 
                     Spacer()
                     

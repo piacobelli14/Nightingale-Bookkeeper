@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var currentView: AppView = .DeviceManage
-    @State private var authenticatedUsername: String = "piacobelli "
+    @State private var authenticatedUsername: String = "piacobelli"
     @State private var authenticatedOrgID: String = "10000"
     
     var body: some View {
