@@ -109,6 +109,14 @@ struct DeviceManage: View {
                 
                     Spacer()
                     
+                    ScrollView {
+                        
+                    }
+                    .frame(height: geometry.size.height * 0.82)
+                    .frame(width: geometry.size.width * 1.0)
+                    
+                    Spacer()
+                    
                     HStack {
                         VStack {
                             Button(action: {
