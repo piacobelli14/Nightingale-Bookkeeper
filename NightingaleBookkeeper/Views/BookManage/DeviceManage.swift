@@ -31,7 +31,7 @@ struct DeviceManage: View {
                         .shadow(color: .gray.opacity(0.5), radius: 3, x: 0, y: 0)
                         .padding(.leading, geometry.size.width * 0.01)
                     
-                    VStack {
+                    VStack(alignment: .leading) {
                         Text("Bookkeeper")
                             .font(.system(size: geometry.size.height * 0.03, weight: .bold))
                             .foregroundColor(.white)

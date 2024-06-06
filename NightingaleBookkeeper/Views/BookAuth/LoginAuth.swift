@@ -110,7 +110,7 @@ struct LoginAuth: View {
                 
                 HStack {
                     Button(action: {
-                        self.currentView = .LoginAuth
+                        self.currentView = .ResetAuth
                     }) {
                         HStack {
                             Text("Forgot password?")
@@ -292,7 +292,7 @@ struct LoginAuth: View {
                     self.isLoginSuccessful = true
                     self.authenticatedUsername = loginResponse.username
                     self.authenticatedOrgID = loginResponse.orgID
-                    self.currentView = .LoginAuth
+                    self.currentView = .DeviceManage
                 }
             } catch {
                 print("Decoding error: \(error)")
