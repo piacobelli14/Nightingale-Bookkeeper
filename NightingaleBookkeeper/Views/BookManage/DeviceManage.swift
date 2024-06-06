@@ -51,7 +51,7 @@ struct DeviceManage: View {
     @State private var errorMessage: String? = nil
     
     @State private var deviceInfo: [WatchData] = []
-    @State private var selectedDeviceInfo: [SelectedDeviceData] = []
+    @State private var selectedDeviceInfo: SelectedDeviceData? = nil
     @State private var watchCells: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
     @State private var selectedDeviceID: String = ""
     
@@ -104,91 +104,102 @@ struct DeviceManage: View {
                             }
                         }
                     }
-                    .opacity(!selectedDeviceID.isEmpty ? 0.2 : 1.0)
+                    .opacity(selectedDeviceInfo != nil ? 0.2 : 1.0)
                     
-                    if !selectedDeviceID.isEmpty, let device = selectedDeviceInfo.first {
-                        HStack {
-                            VStack(alignment: .leading) {
+                    if let device = selectedDeviceInfo {
+                        VStack(alignment: .leading) {
+                            HStack {
+                                Text("Device Type: ")
+                                    .font(.system(size: geometry.size.height * 0.02, weight: .bold))
+                                Text(device.devType)
+                                    .font(.system(size: geometry.size.height * 0.02))
+                            }
+                            .padding(.bottom, 8)
+                            
+                            HStack {
+                                Text("Device ID: ")
+                                    .font(.system(size: geometry.size.height * 0.02, weight: .bold))
+                                Text(device.devID)
+                                    .font(.system(size: geometry.size.height * 0.02))
+                            }
+                            .padding(.bottom, 8)
+                            
+                            HStack {
+                                Text("Organization ID: ")
+                                    .font(.system(size: geometry.size.height * 0.02, weight: .bold))
+                                Text(device.orgID)
+                                    .font(.system(size: geometry.size.height * 0.02))
+                            }
+                            .padding(.bottom, 8)
+                            
+                            HStack {
+                                Text("Assigned To: ")
+                                    .font(.system(size: geometry.size.height * 0.02, weight: .bold))
+                                Text(device.assignedTo)
+                                    .font(.system(size: geometry.size.height * 0.02))
+                            }
+                            .padding(.bottom, 8)
+                            
+                            HStack {
+                                Text("Battery: ")
+                                    .font(.system(size: geometry.size.height * 0.02, weight: .bold))
+                                Text(device.devBattery)
+                                    .font(.system(size: geometry.size.height * 0.02))
+                            }
+                            .padding(.bottom, 8)
+                            
+                            if let firstname = device.firstname, let lastname = device.lastname {
                                 HStack {
-                                    Text("Device Type: ")
+                                    Text("Patient Name: ")
                                         .font(.system(size: geometry.size.height * 0.02, weight: .bold))
-                                    Text(device.devType)
+                                    Text("\(firstname) \(lastname)")
                                         .font(.system(size: geometry.size.height * 0.02))
                                 }
                                 .padding(.bottom, 8)
-                                
+                            }
+                            
+                            if let ptid = device.ptid {
                                 HStack {
-                                    Text("Device ID: ")
+                                    Text("Patient ID: ")
                                         .font(.system(size: geometry.size.height * 0.02, weight: .bold))
-                                    Text(device.devID)
+                                    Text(ptid)
                                         .font(.system(size: geometry.size.height * 0.02))
                                 }
                                 .padding(.bottom, 8)
-                                
+                            }
+                            
+                            if let ptimage = device.ptimage {
                                 HStack {
-                                    Text("Organization ID: ")
+                                    Text("Patient Image: ")
                                         .font(.system(size: geometry.size.height * 0.02, weight: .bold))
-                                    Text(device.orgID)
-                                        .font(.system(size: geometry.size.height * 0.02))
-                                }
-                                .padding(.bottom, 8)
-                                
-                                HStack {
-                                    Text("Assigned To: ")
-                                        .font(.system(size: geometry.size.height * 0.02, weight: .bold))
-                                    Text(device.assignedTo)
-                                        .font(.system(size: geometry.size.height * 0.02))
-                                }
-                                .padding(.bottom, 8)
-                                
-                                HStack {
-                                    Text("Battery: ")
-                                        .font(.system(size: geometry.size.height * 0.02, weight: .bold))
-                                    Text(device.devBattery)
-                                        .font(.system(size: geometry.size.height * 0.02))
-                                }
-                                .padding(.bottom, 8)
-                                
-                                if let firstname = device.firstname, let lastname = device.lastname {
-                                    HStack {
-                                        Text("Patient Name: ")
-                                            .font(.system(size: geometry.size.height * 0.02, weight: .bold))
-                                        Text("\(firstname) \(lastname)")
-                                            .font(.system(size: geometry.size.height * 0.02))
-                                    }
-                                    .padding(.bottom, 8)
-                                }
-                                
-                                if let ptid = device.ptid {
-                                    HStack {
-                                        Text("Patient ID: ")
-                                            .font(.system(size: geometry.size.height * 0.02, weight: .bold))
-                                        Text(ptid)
-                                            .font(.system(size: geometry.size.height * 0.02))
-                                    }
-                                    .padding(.bottom, 8)
-                                }
-                                
-                                if let ptimage = device.ptimage {
-                                    HStack {
-                                        Text("Patient Image: ")
-                                            .font(.system(size: geometry.size.height * 0.02, weight: .bold))
-                                        // Assuming ptimage is a URL string to an image
-                                        if let url = URL(string: ptimage) {
-                                            AsyncImage(url: url) { image in
-                                                image.resizable()
-                                                    .aspectRatio(contentMode: .fit)
-                                                    .frame(width: 100, height: 100)
-                                            } placeholder: {
-                                                ProgressView()
-                                            }
+                                    // Assuming ptimage is a URL string to an image
+                                    if let url = URL(string: ptimage) {
+                                        AsyncImage(url: url) { image in
+                                            image.resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(width: 100, height: 100)
+                                        } placeholder: {
+                                            ProgressView()
                                         }
                                     }
-                                    .padding(.bottom, 8)
                                 }
+                                .padding(.bottom, 8)
                             }
-                            .padding()
+                            
+                            Button(action: {
+                                selectedDeviceInfo = nil
+                                selectedDeviceID = ""
+                            }) {
+                                Text("Close")
+                                    .font(.system(size: geometry.size.height * 0.02, weight: .bold))
+                                    .foregroundColor(.blue)
+                                    .padding()
+                                    .background(Color.white)
+                                    .cornerRadius(8)
+                                    .shadow(color: .gray, radius: 3, x: 0, y: 0)
+                            }
                         }
+                        .padding()
                         .frame(height: geometry.size.height * 0.6)
                         .frame(width: geometry.size.width * 0.8)
                         .background(Color.white)
@@ -200,7 +211,6 @@ struct DeviceManage: View {
                         )
                         .shadow(color: .gray, radius: geometry.size.width * 0.004)
                     }
-
                 }
                 .frame(height: geometry.size.height * 0.82)
                 .frame(width: geometry.size.width * 0.92)
@@ -302,6 +312,7 @@ struct DeviceManage: View {
             }
         }
     }
+    
     private func deviceCell(for device: WatchData, geometry: GeometryProxy) -> some View {
         Button(action: {
             selectedDeviceID = device.devID
@@ -318,7 +329,6 @@ struct DeviceManage: View {
                             .font(.system(size: geometry.size.height * 0.012, weight: .heavy))
                             .foregroundColor(Color.black)
                             .padding(.top, geometry.size.height * 0.002)
-                        
                     }
                     VStack(alignment: .leading) {
                         Text(device.devType)
@@ -334,7 +344,7 @@ struct DeviceManage: View {
                     }
                 }
                 
-                WatchView(devType: "AppleWatch")
+                WatchView(devType: device.devType)
                 
                 VStack {
                     HStack {
@@ -388,6 +398,7 @@ struct DeviceManage: View {
             .shadow(color: .gray, radius: geometry.size.width * 0.004)
         }
     }
+    
     private func getDeviceInfo() {
         let url = URL(string: "http://172.20.10.2:5000/get-devices")!
         var request = URLRequest(url: url)
@@ -451,6 +462,7 @@ struct DeviceManage: View {
         }
         .resume()
     }
+    
     private func getSelectedDeviceInfo() {
         let url = URL(string: "http://172.20.10.2:5000/get-selected-device")!
         var request = URLRequest(url: url)
@@ -498,7 +510,8 @@ struct DeviceManage: View {
                 do {
                     let decodedResponse = try JSONDecoder().decode(SelectedDeviceInfoResponse.self, from: data)
                     DispatchQueue.main.async {
-                        self.selectedDeviceInfo = [decodedResponse.device]  // Store the single device in an array
+                        self.selectedDeviceInfo = decodedResponse.device  // Directly set the device
+                        print("Selected device info updated: \(decodedResponse.device)")  // Debugging print
                     }
                 } catch {
                     DispatchQueue.main.async {
@@ -515,7 +528,4 @@ struct DeviceManage: View {
         }
         .resume()
     }
-
-   
 }
-
