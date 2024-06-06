@@ -147,43 +147,37 @@ struct DeviceManage: View {
                             }
                             .padding(.bottom, 8)
                             
-                            if let firstname = device.firstname, let lastname = device.lastname {
+                            if let firstName = device.firstName, let lastName = device.lastName {
                                 HStack {
                                     Text("Patient Name: ")
                                         .font(.system(size: geometry.size.height * 0.02, weight: .bold))
-                                    Text("\(firstname) \(lastname)")
+                                    Text("\(firstName) \(lastName)")
                                         .font(.system(size: geometry.size.height * 0.02))
                                 }
                                 .padding(.bottom, 8)
                             }
                             
-                            if let ptid = device.ptid {
+                            if let ptID = device.ptID {
                                 HStack {
                                     Text("Patient ID: ")
                                         .font(.system(size: geometry.size.height * 0.02, weight: .bold))
-                                    Text(ptid)
+                                    Text(ptID)
                                         .font(.system(size: geometry.size.height * 0.02))
                                 }
                                 .padding(.bottom, 8)
                             }
                             
-                            if let ptimage = device.ptimage {
-                                HStack {
-                                    Text("Patient Image: ")
-                                        .font(.system(size: geometry.size.height * 0.02, weight: .bold))
-                                    // Assuming ptimage is a URL string to an image
-                                    if let url = URL(string: ptimage) {
-                                        AsyncImage(url: url) { image in
-                                            image.resizable()
-                                                .aspectRatio(contentMode: .fit)
-                                                .frame(width: 100, height: 100)
-                                        } placeholder: {
-                                            ProgressView()
-                                        }
-                                    }
-                                }
-                                .padding(.bottom, 8)
-                            }
+                            if let ptImage = device.ptImage, let imageData = Data(base64Encoded: ptImage), let uiImage = UIImage(data: imageData) {
+                                                            HStack {
+                                                                Text("Patient Image: ")
+                                                                    .font(.system(size: geometry.size.height * 0.02, weight: .bold))
+                                                                Image(uiImage: uiImage)
+                                                                    .resizable()
+                                                                    .aspectRatio(contentMode: .fit)
+                                                                    .frame(width: 100, height: 100)
+                                                            }
+                                                            .padding(.bottom, 8)
+                                                        }
                             
                             Button(action: {
                                 selectedDeviceInfo = nil
