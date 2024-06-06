@@ -8,14 +8,15 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var currentView: AppView = .LoginAuth
+    @State private var authenticatedUsername: String = ""
+    @State private var authenticatedOrgID: String = ""
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        switch currentView {
+        case .LoginAuth:
+            LoginAuth(currentView: $currentView, authenticatedUsername: $authenticatedUsername, authenticatedOrgID: $authenticatedOrgID)
         }
-        .padding()
     }
 }
 
