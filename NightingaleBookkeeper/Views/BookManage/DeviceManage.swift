@@ -72,6 +72,18 @@ struct DeviceManage: View {
                 
                 Spacer()
                 
+                ScrollView {
+                    LazyVGrid(columns: columns, spacing: geometry.size.width * 0.05) {
+                        ForEach(deviceInfo, id: \.devID) { device in
+                            deviceCell(for: device, geometry: geometry)
+                        }
+                    }
+                }
+                .frame(height: geometry.size.height * 0.82)
+                .frame(width: geometry.size.width * 1.0)
+                
+                Spacer()
+                
                 HStack(alignment: .center) {
                     
                     HStack {
@@ -117,14 +129,6 @@ struct DeviceManage: View {
                     }
                     .padding(.top, geometry.size.height * 0.02)
                     .padding(.bottom, geometry.size.height * 0.01)
-                    
-                    ScrollView {
-                        LazyVGrid(columns: columns, spacing: geometry.size.width * 0.05) {
-                            ForEach(deviceInfo, id: \.devID) { device in
-                                deviceCell(for: device, geometry: geometry)
-                            }
-                        }
-                    }
                     
                     HStack {
                         VStack {
