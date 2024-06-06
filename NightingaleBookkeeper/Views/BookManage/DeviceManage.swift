@@ -89,11 +89,20 @@ struct DeviceManage: View {
                     
                     if !selectedDeviceID.isEmpty {
                         HStack {
-                            
+                            VStack {
+                                
+                            }
                         }
-                        .frame(height: geometry.size.height * 0.8)
-                        .frame(width: geometry.size.width * 0.6)
+                        .frame(height: geometry.size.height * 0.6)
+                        .frame(width: geometry.size.width * 0.8)
                         .background(Color.white)
+                        .border(Color(hex: 0xDFE6E9), width: geometry.size.width * 0.003)
+                        .cornerRadius(geometry.size.width * 0.01)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: geometry.size.width * 0.01)
+                                .stroke(Color(hex: 0xDFE6E9).opacity(0.6), lineWidth: geometry.size.width * 0.004)
+                        )
+                        .shadow(color: .gray, radius: geometry.size.width * 0.004)
                     }
                 }
                 .frame(height: geometry.size.height * 0.82)
@@ -289,6 +298,70 @@ struct DeviceManage: View {
         
         let requestBody: [String: Any] = [
             "orgID": authenticatedOrgID
+        ]
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: requestBody, options: [])
+        } catch {
+            self.errorMessage = "JSON serialization error: \(error.localizedDescription)"
+            print(self.errorMessage)
+            return
+        }
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    self.errorMessage = "Network error: \(error.localizedDescription)"
+                    print(self.errorMessage)
+                }
+                return
+            }
+            
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    self.errorMessage = "No data received from the server"
+                    print(self.errorMessage)
+                }
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse else {
+                DispatchQueue.main.async {
+                    self.errorMessage = "Invalid response from the server"
+                    print(self.errorMessage)
+                }
+                return
+            }
+            
+            if response.statusCode == 200 {
+                do {
+                    let decodedResponse = try JSONDecoder().decode(DeviceInfoResponse.self, from: data)
+                    DispatchQueue.main.async {
+                        self.deviceInfo = decodedResponse.data
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        self.errorMessage = "JSON decoding error: \(error.localizedDescription)"
+                        print(self.errorMessage)
+                    }
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.errorMessage = "Server error with status code: \(response.statusCode)"
+                    print(self.errorMessage)
+                }
+            }
+        }
+        .resume()
+    }
+    private func getSelectedDeviceInfo() {
+        let url = URL(string: "http://172.20.10.2:5000/get-devices")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let requestBody: [String: Any] = [
+            "orgID": authenticatedOrgID,
+            "devID": selectedDeviceID
         ]
         do {
             request.httpBody = try JSONSerialization.data(withJSONObject: requestBody, options: [])
