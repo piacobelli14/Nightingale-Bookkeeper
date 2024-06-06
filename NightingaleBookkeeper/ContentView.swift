@@ -14,8 +14,12 @@ struct ContentView: View {
     
     var body: some View {
         switch currentView {
+        case .DeviceManage:
+            DeviceManage(currentView: $currentView, authenticatedUsername: $authenticatedUsername, authenticatedOrgID: $authenticatedOrgID)
         case .LoginAuth:
             LoginAuth(currentView: $currentView, authenticatedUsername: $authenticatedUsername, authenticatedOrgID: $authenticatedOrgID)
+        case .ResetAuth:
+            ResetAuth(currentView: $currentView)
         }
     }
 }
