@@ -18,7 +18,7 @@ struct LoginAuth: View {
     @Binding var authenticatedOrgID: String
     
     let gradient = LinearGradient(
-        gradient: Gradient(colors: [Color(hex: 0x222832), Color(hex: 0x222832)]),
+        gradient: Gradient(colors: [Color(hex: 0x3C537A), Color(hex: 0x222832)]),
         startPoint: .leading,
         endPoint: .trailing
     )
