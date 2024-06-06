@@ -85,7 +85,6 @@ struct DeviceManage: View {
                 Spacer()
                 
                 HStack(alignment: .center) {
-                    
                     HStack {
                         VStack {
                             Button(action: {
@@ -129,6 +128,8 @@ struct DeviceManage: View {
                     }
                     .padding(.top, geometry.size.height * 0.02)
                     .padding(.bottom, geometry.size.height * 0.01)
+                    
+                    Spacer()
                     
                     HStack {
                         VStack {
