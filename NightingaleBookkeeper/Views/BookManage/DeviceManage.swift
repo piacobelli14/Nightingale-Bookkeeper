@@ -77,7 +77,7 @@ struct DeviceManage: View {
                                     .shadow(color: .gray.opacity(0.5), radius: 3, x: 0, y: 0)
                             }
                             
-                            Text("Add Device")
+                            Text("Add")
                                 .font(.system(size: geometry.size.height * 0.012, weight: .semibold))
                                 .foregroundColor(Color.white)
                                 .opacity(0.6)
@@ -97,7 +97,7 @@ struct DeviceManage: View {
                                     .shadow(color: .gray.opacity(0.5), radius: 3, x: 0, y: 0)
                             }
                             
-                            Text("Remove Device")
+                            Text("Remove")
                                 .font(.system(size: geometry.size.height * 0.012, weight: .semibold))
                                 .foregroundColor(Color.white)
                                 .opacity(0.6)
