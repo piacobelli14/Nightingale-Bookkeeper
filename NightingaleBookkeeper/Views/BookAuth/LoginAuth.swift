@@ -18,7 +18,7 @@ struct LoginAuth: View {
     @Binding var authenticatedOrgID: String
     
     let gradient = LinearGradient(
-        gradient: Gradient(colors: [Color(hex: 0x3C537A), Color(hex: 0x222832)]),
+        gradient: Gradient(colors: [Color(hex: 0x222832), Color(hex: 0x3C537A)]),
         startPoint: .leading,
         endPoint: .trailing
     )
@@ -104,12 +104,12 @@ struct LoginAuth: View {
                             Text("Forgot password?")
                                 .font(.system(size: geometry.size.height * 0.016, weight: .semibold))
                                 .foregroundColor(Color.white)
-                                .opacity(0.8)
+                                .opacity(0.7)
                                 .padding(.leading, geometry.size.width * 0.005)
                             
                             Text("Click here to reset.")
                                 .font(.system(size: geometry.size.height * 0.016, weight: .bold))
-                                .foregroundColor(Color(hex: 0xDA64ED))
+                                .foregroundColor(Color.white)
                                 .padding(0)
                             Spacer()
                         }
@@ -223,7 +223,7 @@ struct LoginAuth: View {
                     }
                     .frame(width: geometry.size.width * 0.5)
                     .padding(.vertical, geometry.size.height * 0.018)
-                    .background(Color(hex: 0xDA64ED))
+                    .background(Color(hex: 0x3C537A))
                     .cornerRadius(geometry.size.height * 0.01)
                     
                     Spacer()
