@@ -104,11 +104,12 @@ struct DeviceManage: View {
                         }
                         .padding(.leading, geometry.size.width * 0.03)
                     }
+                    .padding(.top, geometry.size.height * 0.02)
+                    .padding(.bottom, geometry.size.height * 0.01)
                 
                     Spacer()
                     
                     HStack {
-                        
                         VStack {
                             Button(action: {
                                 self.authenticatedUsername = ""
@@ -120,7 +121,6 @@ struct DeviceManage: View {
                                     .frame(height: geometry.size.height * 0.022)
                                     .foregroundColor(Color.white)
                                     .shadow(color: .gray.opacity(0.5), radius: 3, x: 0, y: 0)
-                                    .padding(.leading, geometry.size.width * 0.01)
                             }
                             
                             Text("Logout")
@@ -130,7 +130,7 @@ struct DeviceManage: View {
                         }
                         .padding(.trailing, geometry.size.width * 0.03)
                     }
-                    .padding(.top, geometry.size.height * 0.014)
+                    .padding(.top, geometry.size.height * 0.02)
                     .padding(.bottom, geometry.size.height * 0.01)
                     
                 }
