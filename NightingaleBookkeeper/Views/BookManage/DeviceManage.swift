@@ -85,7 +85,7 @@ struct DeviceManage: View {
                     }
                 }
                 .frame(height: geometry.size.height * 0.82)
-                .frame(width: geometry.size.width * 1.0)
+                .frame(width: geometry.size.width * 0.92)
                 
                 Spacer()
                 
@@ -257,8 +257,8 @@ struct DeviceManage: View {
                     )
                 }
             }
-            .frame(width: geometry.size.width * 0.38, height: geometry.size.height * 0.28)
-            .padding(geometry.size.height * 0.014)
+            .frame(width: geometry.size.width * 0.42, height: geometry.size.height * 0.28)
+            .padding(geometry.size.height * 0.005)
             .padding(.vertical, geometry.size.height * 0.005)
             .background(Color(hex: 0xF6FCFE).opacity(0.8))
             .border(Color(hex: 0xDFE6E9), width: geometry.size.width * 0.003)
