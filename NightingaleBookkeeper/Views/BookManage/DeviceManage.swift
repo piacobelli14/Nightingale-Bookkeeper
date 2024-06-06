@@ -58,6 +58,52 @@ struct DeviceManage: View {
                             .foregroundColor(.gray)
                     }
                 )
+                
+                Spacer()
+                
+                HStack(alignment: .center) {
+                
+                    Spacer()
+                    
+                    HStack {
+                        
+                        VStack {
+                            Button(action: {
+                                self.authenticatedUsername = ""
+                                self.currentView = .LoginAuth
+                            }) {
+                                Image(systemName: "lock")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(height: geometry.size.height * 0.022)
+                                    .foregroundColor(Color.white)
+                                    .shadow(color: .gray.opacity(0.5), radius: 3, x: 0, y: 0)
+                                    .padding(.leading, geometry.size.width * 0.01)
+                            }
+                            
+                            Text("Logout")
+                                .font(.system(size: geometry.size.height * 0.012, weight: .semibold))
+                                .foregroundColor(Color.white)
+                                .opacity(0.6)
+                        }
+                        .padding(.trailing, geometry.size.width * 0.03)
+                    }
+                    .padding(.top, geometry.size.height * 0.014)
+                    .padding(.bottom, geometry.size.height * 0.01)
+                    
+                }
+                .frame(width: geometry.size.width * 1.0)
+                .edgesIgnoringSafeArea(.all)
+                .background(Color(hex: 0x504F51))
+                .background(
+                    VStack {
+                        Rectangle()
+                            .frame(height: geometry.size.height * 0.001)
+                            .foregroundColor(.gray)
+                        Spacer()
+                    }
+                )
+                
             }
             .frame(width: geometry.size.width * 1.0, height: geometry.size.height * 1.0)
             .background(gradient)
