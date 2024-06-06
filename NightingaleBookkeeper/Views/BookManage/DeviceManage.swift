@@ -13,6 +13,11 @@ struct DeviceInfoResponse: Codable {
     let data: [WatchData]
 }
 
+struct SelectedDeviceInfoResponse: Codable {
+    let message: String
+    let device: SelectedDeviceData
+}
+
 struct WatchData: Codable {
     let devID: String
     let devType: String
@@ -20,6 +25,19 @@ struct WatchData: Codable {
     let assignedTo: String
     let devBattery: String
 }
+
+struct SelectedDeviceData: Codable {
+    let devID: String
+    let devType: String
+    let orgID: String
+    let assignedTo: String
+    let devBattery: String
+    let firstname: String?
+    let lastname: String?
+    let ptid: String?
+    let ptimage: String?
+}
+
 
 struct DeviceManage: View {
     @Binding var currentView: AppView
@@ -33,7 +51,8 @@ struct DeviceManage: View {
     @State private var errorMessage: String? = nil
     
     @State private var deviceInfo: [WatchData] = []
-    @State private var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
+    @State private var selectedDeviceInfo: [SelectedDeviceData] = []
+    @State private var watchCells: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
     @State private var selectedDeviceID: String = ""
     
     var body: some View {
@@ -79,7 +98,7 @@ struct DeviceManage: View {
                 
                 ZStack {
                     ScrollView {
-                        LazyVGrid(columns: columns, spacing: geometry.size.width * 0.05) {
+                        LazyVGrid(columns: watchCells, spacing: geometry.size.width * 0.05) {
                             ForEach(deviceInfo, id: \.devID) { device in
                                 deviceCell(for: device, geometry: geometry)
                             }
@@ -208,6 +227,7 @@ struct DeviceManage: View {
     private func deviceCell(for device: WatchData, geometry: GeometryProxy) -> some View {
         Button(action: {
             selectedDeviceID = device.devID
+            getSelectedDeviceInfo()
         }) {
             VStack {
                 HStack {
@@ -354,7 +374,7 @@ struct DeviceManage: View {
         .resume()
     }
     private func getSelectedDeviceInfo() {
-        let url = URL(string: "http://172.20.10.2:5000/get-devices")!
+        let url = URL(string: "http://172.20.10.2:5000/get-selected-device")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -398,9 +418,9 @@ struct DeviceManage: View {
             
             if response.statusCode == 200 {
                 do {
-                    let decodedResponse = try JSONDecoder().decode(DeviceInfoResponse.self, from: data)
+                    let decodedResponse = try JSONDecoder().decode(SelectedDeviceInfoResponse.self, from: data)
                     DispatchQueue.main.async {
-                        self.deviceInfo = decodedResponse.data
+                        self.selectedDeviceInfo = [decodedResponse.device]  // Store the single device in an array
                     }
                 } catch {
                     DispatchQueue.main.async {
@@ -417,6 +437,7 @@ struct DeviceManage: View {
         }
         .resume()
     }
+
    
 }
 
