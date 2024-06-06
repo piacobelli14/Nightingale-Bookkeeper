@@ -106,11 +106,88 @@ struct DeviceManage: View {
                     }
                     .opacity(!selectedDeviceID.isEmpty ? 0.2 : 1.0)
                     
-                    if !selectedDeviceID.isEmpty {
+                    if !selectedDeviceID.isEmpty, let device = selectedDeviceInfo.first {
                         HStack {
-                            VStack {
+                            VStack(alignment: .leading) {
+                                HStack {
+                                    Text("Device Type: ")
+                                        .font(.system(size: geometry.size.height * 0.02, weight: .bold))
+                                    Text(device.devType)
+                                        .font(.system(size: geometry.size.height * 0.02))
+                                }
+                                .padding(.bottom, 8)
                                 
+                                HStack {
+                                    Text("Device ID: ")
+                                        .font(.system(size: geometry.size.height * 0.02, weight: .bold))
+                                    Text(device.devID)
+                                        .font(.system(size: geometry.size.height * 0.02))
+                                }
+                                .padding(.bottom, 8)
+                                
+                                HStack {
+                                    Text("Organization ID: ")
+                                        .font(.system(size: geometry.size.height * 0.02, weight: .bold))
+                                    Text(device.orgID)
+                                        .font(.system(size: geometry.size.height * 0.02))
+                                }
+                                .padding(.bottom, 8)
+                                
+                                HStack {
+                                    Text("Assigned To: ")
+                                        .font(.system(size: geometry.size.height * 0.02, weight: .bold))
+                                    Text(device.assignedTo)
+                                        .font(.system(size: geometry.size.height * 0.02))
+                                }
+                                .padding(.bottom, 8)
+                                
+                                HStack {
+                                    Text("Battery: ")
+                                        .font(.system(size: geometry.size.height * 0.02, weight: .bold))
+                                    Text(device.devBattery)
+                                        .font(.system(size: geometry.size.height * 0.02))
+                                }
+                                .padding(.bottom, 8)
+                                
+                                if let firstname = device.firstname, let lastname = device.lastname {
+                                    HStack {
+                                        Text("Patient Name: ")
+                                            .font(.system(size: geometry.size.height * 0.02, weight: .bold))
+                                        Text("\(firstname) \(lastname)")
+                                            .font(.system(size: geometry.size.height * 0.02))
+                                    }
+                                    .padding(.bottom, 8)
+                                }
+                                
+                                if let ptid = device.ptid {
+                                    HStack {
+                                        Text("Patient ID: ")
+                                            .font(.system(size: geometry.size.height * 0.02, weight: .bold))
+                                        Text(ptid)
+                                            .font(.system(size: geometry.size.height * 0.02))
+                                    }
+                                    .padding(.bottom, 8)
+                                }
+                                
+                                if let ptimage = device.ptimage {
+                                    HStack {
+                                        Text("Patient Image: ")
+                                            .font(.system(size: geometry.size.height * 0.02, weight: .bold))
+                                        // Assuming ptimage is a URL string to an image
+                                        if let url = URL(string: ptimage) {
+                                            AsyncImage(url: url) { image in
+                                                image.resizable()
+                                                    .aspectRatio(contentMode: .fit)
+                                                    .frame(width: 100, height: 100)
+                                            } placeholder: {
+                                                ProgressView()
+                                            }
+                                        }
+                                    }
+                                    .padding(.bottom, 8)
+                                }
                             }
+                            .padding()
                         }
                         .frame(height: geometry.size.height * 0.6)
                         .frame(width: geometry.size.width * 0.8)
@@ -123,6 +200,7 @@ struct DeviceManage: View {
                         )
                         .shadow(color: .gray, radius: geometry.size.width * 0.004)
                     }
+
                 }
                 .frame(height: geometry.size.height * 0.82)
                 .frame(width: geometry.size.width * 0.92)
