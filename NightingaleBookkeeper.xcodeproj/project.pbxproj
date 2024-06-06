@@ -51,6 +51,9 @@
 		CB09B6F72C123A7700946F3F /* NightingaleBookkeeper */ = {
 			isa = PBXGroup;
 			children = (
+				CB09B7082C124A4E00946F3F /* Views */,
+				CB09B7072C124A3C00946F3F /* Managers */,
+				CB09B7062C124A3300946F3F /* Protocols */,
 				CB09B6F82C123A7700946F3F /* NightingaleBookkeeperApp.swift */,
 				CB09B6FA2C123A7700946F3F /* ContentView.swift */,
 				CB09B6FC2C123A7A00946F3F /* Assets.xcassets */,
@@ -65,6 +68,35 @@
 				CB09B6FF2C123A7A00946F3F /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		CB09B7062C124A3300946F3F /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		CB09B7072C124A3C00946F3F /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		CB09B7082C124A4E00946F3F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				CB09B7092C124A5900946F3F /* BookAuth */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		CB09B7092C124A5900946F3F /* BookAuth */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = BookAuth;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
