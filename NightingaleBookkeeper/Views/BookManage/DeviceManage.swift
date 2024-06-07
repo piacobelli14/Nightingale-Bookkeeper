@@ -113,7 +113,7 @@ struct DeviceManage: View {
                                                     .italic()
                                                     .foregroundColor(Color.white)
                                             }
-                                            .padding(.vertical, geometry.size.height * 0.01)
+                                            .padding(.vertical, geometry.size.height * 0.001)
                                             
                                             HStack {
                                                 Text("Assigned To:")
@@ -126,7 +126,7 @@ struct DeviceManage: View {
                                                     .foregroundColor(Color.white)
                                                 Spacer()
                                             }
-                                            .padding(.vertical, geometry.size.height * 0.01)
+                                            .padding(.vertical, geometry.size.height * 0.001)
                                             
                                             HStack {
                                                 Text("Swap Time: ")
@@ -139,9 +139,9 @@ struct DeviceManage: View {
                                                     .foregroundColor(Color.white)
                                                 Spacer()
                                             }
-                                            .padding(.vertical, geometry.size.height * 0.01)
+                                            .padding(.vertical, geometry.size.height * 0.001)
                                         }
-                                        .padding(.vertical, geometry.size.height * 0.04)
+                                        .padding(.vertical, geometry.size.height * 0.02)
                                         .background(Color(hex: 0x222222))
                                         Divider()
                                             .background(Color.white)
@@ -177,8 +177,9 @@ struct DeviceManage: View {
                         .shadow(color: .gray, radius: geometry.size.width * 0.004)
                     }
                 }
-                .frame(height: geometry.size.height * 0.82)
-                .frame(width: geometry.size.width * 0.92)
+                .frame(height: geometry.size.height * 0.80)
+                .frame(width: geometry.size.width * 0.96)
+                .padding(.top, geometry.size.height * 0.02)
                 
                 Spacer()
                 
@@ -321,7 +322,7 @@ struct DeviceManage: View {
                     }
                 }
                 
-                WatchView(devType: device.devType)
+                WatchView(devType: "AppleWatch")
                 
                 VStack {
                     HStack {
@@ -362,9 +363,9 @@ struct DeviceManage: View {
                     )
                 }
             }
-            .frame(width: geometry.size.width * 0.42, height: geometry.size.height * 0.28)
+            .frame(width: geometry.size.width * 0.44, height: geometry.size.height * 0.35)
             .padding(geometry.size.height * 0.005)
-            .padding(.vertical, geometry.size.height * 0.005)
+            .padding(.vertical, geometry.size.height * 0.008)
             .background(Color(hex: 0xF6FCFE).opacity(0.8))
             .border(Color(hex: 0xDFE6E9), width: geometry.size.width * 0.003)
             .cornerRadius(geometry.size.width * 0.01)
