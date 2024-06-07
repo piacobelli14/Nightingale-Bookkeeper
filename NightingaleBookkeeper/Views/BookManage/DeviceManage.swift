@@ -97,6 +97,7 @@ struct DeviceManage: View {
                             Text("Device Assignment Log")
                                 .font(.system(size: geometry.size.height * 0.03, weight: .bold))
                                 .foregroundColor(Color.white)
+                                .shadow(color: .gray, radius: 5, x: 0, y: 0)
                             
                             
                             ScrollView {
@@ -156,11 +157,11 @@ struct DeviceManage: View {
                             }) {
                                 Text("Close")
                                     .font(.system(size: geometry.size.height * 0.02, weight: .bold))
-                                    .foregroundColor(.blue)
+                                    .foregroundColor(Color(hex: 0x222222))
                                     .padding()
                                     .background(Color.white)
-                                    .cornerRadius(8)
-                                    .shadow(color: .gray, radius: 3, x: 0, y: 0)
+                                    .cornerRadius(geometry.size.width * 0.01)
+                                    .shadow(color: .gray, radius: 5, x: 0, y: 0)
                             }
                             .padding(.top, 16)
                         }
@@ -363,9 +364,9 @@ struct DeviceManage: View {
                     )
                 }
             }
-            .frame(width: geometry.size.width * 0.44, height: geometry.size.height * 0.35)
-            .padding(geometry.size.height * 0.005)
-            .padding(.vertical, geometry.size.height * 0.008)
+            .frame(width: geometry.size.width * 0.44, height: geometry.size.height * 0.32)
+            .padding(geometry.size.height * 0.01)
+            .padding(.vertical, geometry.size.height * 0.02)
             .background(Color(hex: 0xF6FCFE).opacity(0.8))
             .border(Color(hex: 0xDFE6E9), width: geometry.size.width * 0.003)
             .cornerRadius(geometry.size.width * 0.01)
