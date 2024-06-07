@@ -201,8 +201,7 @@ struct DeviceManage: View {
                     HStack {
                         VStack {
                             Button(action: {
-                                self.authenticatedUsername = ""
-                                self.currentView = .LoginAuth
+                                self.currentView = .AddDevice
                             }) {
                                 Image(systemName: "plus.circle")
                                     .resizable()
@@ -221,8 +220,7 @@ struct DeviceManage: View {
                         
                         VStack {
                             Button(action: {
-                                self.authenticatedUsername = ""
-                                self.currentView = .LoginAuth
+                                self.currentView = .RemoveDevice
                             }) {
                                 Image(systemName: "minus.circle")
                                     .resizable()
@@ -248,6 +246,7 @@ struct DeviceManage: View {
                         VStack {
                             Button(action: {
                                 self.authenticatedUsername = ""
+                                self.authenticatedOrgID = ""
                                 self.currentView = .LoginAuth
                             }) {
                                 Image(systemName: "lock")
