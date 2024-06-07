@@ -22,7 +22,29 @@ struct RemoveDevice: View {
     var body: some View {
         GeometryReader { geometry in
             VStack {
+                HStack(alignment: .center) {
+                    Button(action: {
+                        self.currentView = .DeviceManage
+                    }) {
+                        Image(systemName: "arrow.backward.circle")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(height: geometry.size.height * 0.03)
+                            .shadow(color: .gray.opacity(0.5), radius: 3, x: 0, y: 0)
+                            .padding(.leading, geometry.size.width * 0.03)
+                            .foregroundColor(Color.white)
+                    }
+                    
+                    Text("Remove Registered Device")
+                        .font(.system(size: geometry.size.height * 0.016, weight: .semibold))
+                        .foregroundColor(Color.white)
+                        .shadow(color: .gray.opacity(0.3), radius: 0, x: 0, y: 2)
+                        .padding(.leading, geometry.size.width * 0.02)
+                    Spacer()
+                }
+                .padding(.top, geometry.size.height * 0.02)
                 
+                Spacer()
             }
             .frame(width: geometry.size.width * 1.0, height: geometry.size.height * 1.0)
             .background(gradient)

@@ -84,7 +84,7 @@ struct DeviceManage: View {
                 
                 ZStack {
                     ScrollView {
-                        LazyVGrid(columns: watchCells, spacing: geometry.size.width * 0.02) {
+                        LazyVGrid(columns: watchCells, spacing: geometry.size.width * 0.03) {
                             ForEach(deviceInfo, id: \.devID) { device in
                                 deviceCell(for: device, geometry: geometry)
                             }
@@ -377,8 +377,8 @@ struct DeviceManage: View {
                 }
             }
             .frame(width: geometry.size.width * 0.44, height: geometry.size.height * 0.32)
-            .padding(.vertical, geometry.size.height * 0.04)
-            .padding(.horizontal, geometry.size.width * 0.01)
+            .padding(.vertical, geometry.size.height * 0.03)
+            .padding(.horizontal, geometry.size.width * 0.005)
             .background(Color(hex: 0xF6FCFE).opacity(0.8))
             .border(Color(hex: 0xDFE6E9), width: geometry.size.width * 0.003)
             .cornerRadius(geometry.size.width * 0.01)

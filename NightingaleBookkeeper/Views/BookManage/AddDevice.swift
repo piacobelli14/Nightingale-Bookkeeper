@@ -19,9 +19,135 @@ struct AddDevice: View {
         endPoint: .trailing
     )
     
+    @State private var newDevType: String = ""
+    @State private var newDevID: String = ""
+    
     var body: some View {
         GeometryReader { geometry in
             VStack {
+                HStack(alignment: .center) {
+                    Button(action: {
+                        self.currentView = .DeviceManage
+                    }) {
+                        Image(systemName: "arrow.backward.circle")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(height: geometry.size.height * 0.03)
+                            .shadow(color: .gray.opacity(0.5), radius: 3, x: 0, y: 0)
+                            .padding(.leading, geometry.size.width * 0.03)
+                            .foregroundColor(Color.white)
+                    }
+                    
+                    Text("Register New Device")
+                        .font(.system(size: geometry.size.height * 0.016, weight: .semibold))
+                        .foregroundColor(Color.white)
+                        .shadow(color: .gray.opacity(0.3), radius: 0, x: 0, y: 2)
+                        .padding(.leading, geometry.size.width * 0.02)
+                    Spacer()
+                }
+                .padding(.top, geometry.size.height * 0.02)
+                
+                Spacer()
+                
+                VStack {
+                    Text("Select New Device Type")
+                        .font(.system(size: geometry.size.height * 0.02, weight: .semibold))
+                        .foregroundColor(Color.white)
+                        .shadow(color: .gray, radius: geometry.size.width * 0.05)
+                    Menu {
+                        ForEach(Array(["Apple Watch SE", "Fitbit Sense"]), id: \.self) { type in
+                            Button(type) {
+                                newDevType = type
+                            }
+                        }
+                    } label: {
+                        Text(newDevType == "" ? "Select Device Type" : newDevType)
+                            .multilineTextAlignment(.center).foregroundColor(.black)
+                            .frame(width: geometry.size.width * 0.6)
+                            .padding(.vertical, geometry.size.width * 0.02)
+                            .font(.system(size: geometry.size.height * 0.014, weight: .light))
+                            .multilineTextAlignment(.center)
+                            .background(Color(hex: 0xF6FCFE))
+                            .border(Color(hex: 0xDFE6E9), width: geometry.size.width * 0.003)
+                            .cornerRadius(geometry.size.width * 0.01)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: geometry.size.width * 0.01)
+                                    .stroke(Color(hex: 0xDFE6E9), lineWidth: geometry.size.width * 0.004)
+                            )
+                            .shadow(color: .gray, radius: geometry.size.width * 0.004)
+                    }
+                    .accentColor(.black)
+                }
+                
+                VStack {
+                    Text("Enter a New Device ID")
+                        .font(.system(size: geometry.size.height * 0.02, weight: .semibold))
+                        .foregroundColor(Color.white)
+                        .shadow(color: .gray, radius: geometry.size.width * 0.05)
+                    
+                    TextField("Enter a Device ID", text:  $newDevID)
+                        .multilineTextAlignment(.center).foregroundColor(.black)
+                        .frame(width: geometry.size.width * 0.6)
+                        .padding(.vertical, geometry.size.width * 0.02)
+                        .font(.system(size: geometry.size.height * 0.014, weight: .light))
+                        .multilineTextAlignment(.center)
+                        .background(Color(hex: 0xF6FCFE))
+                        .border(Color(hex: 0xDFE6E9), width: geometry.size.width * 0.003)
+                        .cornerRadius(geometry.size.width * 0.01)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: geometry.size.width * 0.01)
+                                .stroke(Color(hex: 0xDFE6E9), lineWidth: geometry.size.width * 0.004)
+                        )
+                        .shadow(color: .gray, radius: geometry.size.width * 0.004)
+
+                }
+                .padding(.top, geometry.size.height * 0.05)
+                
+                
+                VStack {
+                    HStack {
+                        VStack(alignment: .trailing) {
+                            Text(newDevType != "" ? "Device Type: " : "")
+                                .font(.system(size: geometry.size.height * 0.016, weight: .heavy))
+                                .foregroundColor(Color.black)
+                            
+                            Text(newDevID != "" ? "Device ID: " : "")
+                                .font(.system(size: geometry.size.height * 0.016, weight: .heavy))
+                                .foregroundColor(Color.black)
+                                .padding(.top, geometry.size.height * 0.002)
+                                
+                        }
+                        VStack(alignment: .leading) {
+                            Text(newDevType)
+                                .font(.system(size: geometry.size.height * 0.016, weight: .semibold))
+                                .foregroundColor(Color.black)
+                                .italic()
+                            
+                            Text(newDevID)
+                                .font(.system(size: geometry.size.height * 0.012, weight: .semibold))
+                                .foregroundColor(Color.black)
+                                .italic()
+                                .padding(.top, geometry.size.height * 0.002)
+                        }
+                    }
+                    
+                    WatchView(devType: "AppleWatch")
+                    
+                }
+                .frame(width: geometry.size.width * 0.44, height: geometry.size.height * 0.32)
+                .padding(.vertical, geometry.size.height * 0.03)
+                .padding(.horizontal, geometry.size.width * 0.005)
+                .background(Color(hex: 0xF6FCFE).opacity(0.8))
+                .border(Color(hex: 0xDFE6E9), width: geometry.size.width * 0.003)
+                .cornerRadius(geometry.size.width * 0.01)
+                .overlay(
+                    RoundedRectangle(cornerRadius: geometry.size.width * 0.01)
+                        .stroke(Color(hex: 0xDFE6E9).opacity(0.6), lineWidth: geometry.size.width * 0.004)
+                )
+                .shadow(color: .gray, radius: geometry.size.width * 0.004)
+                .padding(.top, geometry.size.height * 0.05)
+                
+                Spacer()
                 
             }
             .frame(width: geometry.size.width * 1.0, height: geometry.size.height * 1.0)
