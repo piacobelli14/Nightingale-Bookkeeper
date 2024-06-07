@@ -148,20 +148,19 @@ struct AddDevice: View {
                 .padding(.top, geometry.size.height * 0.05)
                 
                 
-                HStack {
-                    Button(action: {
-                    }) {
-                        HStack {
-                            Text("Register New Device")
-                                .font(.system(size: geometry.size.height * 0.016, weight: .semibold, design: .default))
-                                .foregroundColor(Color(hex: 0xF5F5F5))
-                        }
-                        .frame(width: geometry.size.width * 0.6)
-                        .padding(.vertical, geometry.size.height * 0.016)
-                        .background(Color(hex: 0x3C537A))
-                        .cornerRadius(geometry.size.width * 0.01)
-                        .shadow(color: .gray, radius: geometry.size.width * 0.004)
+               
+                Button(action: {
+                }) {
+                    HStack {
+                        Text("Register New Device")
+                            .font(.system(size: geometry.size.height * 0.016, weight: .semibold, design: .default))
+                            .foregroundColor(Color(hex: 0xF5F5F5))
                     }
+                    .frame(width: geometry.size.width * 0.6)
+                    .padding(.vertical, geometry.size.height * 0.016)
+                    .background(Color(hex: 0x3C537A))
+                    .cornerRadius(geometry.size.width * 0.01)
+                    .shadow(color: .gray, radius: geometry.size.width * 0.004)
                 }
                 .padding(.top, geometry.size.height * 0.1)
                 
