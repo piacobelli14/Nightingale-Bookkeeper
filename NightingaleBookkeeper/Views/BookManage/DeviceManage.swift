@@ -302,22 +302,22 @@ struct DeviceManage: View {
                 HStack {
                     VStack(alignment: .trailing) {
                         Text("Device Type: ")
-                            .font(.system(size: geometry.size.height * 0.012, weight: .heavy))
+                            .font(.system(size: geometry.size.height * 0.016, weight: .heavy))
                             .foregroundColor(Color.black)
                         
                         Text("Device ID: ")
-                            .font(.system(size: geometry.size.height * 0.012, weight: .heavy))
+                            .font(.system(size: geometry.size.height * 0.016, weight: .heavy))
                             .foregroundColor(Color.black)
                             .padding(.top, geometry.size.height * 0.002)
                     }
                     VStack(alignment: .leading) {
                         Text(device.devType)
-                            .font(.system(size: geometry.size.height * 0.012, weight: .semibold))
+                            .font(.system(size: geometry.size.height * 0.016, weight: .semibold))
                             .foregroundColor(Color.black)
                             .italic()
                         
                         Text(device.devID)
-                            .font(.system(size: geometry.size.height * 0.012, weight: .semibold))
+                            .font(.system(size: geometry.size.height * 0.016, weight: .semibold))
                             .foregroundColor(Color.black)
                             .italic()
                             .padding(.top, geometry.size.height * 0.002)
