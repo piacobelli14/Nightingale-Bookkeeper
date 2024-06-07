@@ -140,7 +140,7 @@ struct RemoveDevice: View {
                         .padding(.leading, geometry.size.width * 0.02)
                         .multilineTextAlignment(.leading)
                 }
-                .padding(.top, geometry.size.height * 0.045)
+                .padding(.top, geometry.size.height * 0.085)
                 .frame(width: geometry.size.width * 0.6)
                 
                 Button(action: {
@@ -156,7 +156,7 @@ struct RemoveDevice: View {
                     .cornerRadius(geometry.size.width * 0.01)
                     .shadow(color: .gray, radius: geometry.size.width * 0.004)
                 }
-                .padding(.top, geometry.size.height * 0.08)
+                .padding(.top, geometry.size.height * 0.02)
                 
                 if let errorMessage = errorMessage {
                     Text(errorMessage)
