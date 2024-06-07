@@ -97,57 +97,63 @@ struct DeviceManage: View {
                             Text("Device Assignment Log")
                                 .font(.system(size: geometry.size.height * 0.03, weight: .bold))
                                 .foregroundColor(Color.white)
-                                .shadow(color: .gray, radius: 3, x: 0, y: 0)
-                            
+                                .shadow(color: .gray, radius: 2, x: 0, y: 0)
                             
                             ScrollView {
                                 LazyVStack {
-                                    ForEach(selectedDeviceLog, id: \.swapTime) { log in
-                                        VStack(alignment: .leading) {
-                                            HStack {
-                                                Text("Device:")
-                                                    .font(.system(size: geometry.size.height * 0.02, weight: .bold))
-                                                    .foregroundColor(Color.white)
+                                    if selectedDeviceLog.count > 0 {
+                                        ForEach(selectedDeviceLog, id: \.swapTime) { log in
+                                            VStack(alignment: .leading) {
+                                                HStack {
+                                                    Text("Device:")
+                                                        .font(.system(size: geometry.size.height * 0.02, weight: .bold))
+                                                        .foregroundColor(Color.white)
+                                                    
+                                                    Text("\(log.devID)")
+                                                        .font(.system(size: geometry.size.height * 0.018, weight: .semibold))
+                                                        .italic()
+                                                        .foregroundColor(Color.white)
+                                                }
+                                                .padding(.vertical, geometry.size.height * 0.001)
                                                 
-                                                Text("\(log.devID)")
-                                                    .font(.system(size: geometry.size.height * 0.018, weight: .semibold))
-                                                    .italic()
-                                                    .foregroundColor(Color.white)
+                                                HStack {
+                                                    Text("Assigned To:")
+                                                        .font(.system(size: geometry.size.height * 0.02, weight: .bold))
+                                                        .foregroundColor(Color.white)
+                                                    
+                                                    Text("\(log.assignedTo != "Device Removed" ? "Pt #\(log.assignedTo)" : "Device Removed")")
+                                                        .font(.system(size: geometry.size.height * 0.018, weight: .semibold))
+                                                        .italic()
+                                                        .foregroundColor(Color.white)
+                                                    Spacer()
+                                                }
+                                                .padding(.vertical, geometry.size.height * 0.001)
+                                                
+                                                HStack {
+                                                    Text("Swap Time: ")
+                                                        .font(.system(size: geometry.size.height * 0.02, weight: .bold))
+                                                        .foregroundColor(Color.white)
+                                                    
+                                                    Text("\(formatDate(log.swapTime))")
+                                                        .font(.system(size: geometry.size.height * 0.018, weight: .semibold))
+                                                        .italic()
+                                                        .foregroundColor(Color.white)
+                                                    Spacer()
+                                                }
+                                                .padding(.vertical, geometry.size.height * 0.001)
                                             }
-                                            .padding(.vertical, geometry.size.height * 0.001)
+                                            .padding(.vertical, geometry.size.height * 0.02)
+                                            .background(Color(hex: 0x222222))
+                                            Divider()
+                                                .background(Color.white)
                                             
-                                            HStack {
-                                                Text("Assigned To:")
-                                                    .font(.system(size: geometry.size.height * 0.02, weight: .bold))
-                                                    .foregroundColor(Color.white)
-                                                
-                                                Text("\(log.assignedTo != "Device Removed" ? "Pt #\(log.assignedTo)" : "Device Removed")")
-                                                    .font(.system(size: geometry.size.height * 0.018, weight: .semibold))
-                                                    .italic()
-                                                    .foregroundColor(Color.white)
-                                                Spacer()
-                                            }
-                                            .padding(.vertical, geometry.size.height * 0.001)
-                                            
-                                            HStack {
-                                                Text("Swap Time: ")
-                                                    .font(.system(size: geometry.size.height * 0.02, weight: .bold))
-                                                    .foregroundColor(Color.white)
-                                                
-                                                Text("\(formatDate(log.swapTime))")
-                                                    .font(.system(size: geometry.size.height * 0.018, weight: .semibold))
-                                                    .italic()
-                                                    .foregroundColor(Color.white)
-                                                Spacer()
-                                            }
-                                            .padding(.vertical, geometry.size.height * 0.001)
                                         }
-                                        .padding(.vertical, geometry.size.height * 0.02)
-                                        .background(Color(hex: 0x222222))
-                                        Divider()
-                                            .background(Color.white)
+                                    } else {
+                                       Text("No previous assignment info.")
+                                           .font(.system(size: geometry.size.height * 0.016, weight: .semibold))
+                                           .foregroundColor(Color.white)
                                            
-                                    }
+                                   }
                                 }
                             }
                             
@@ -330,9 +336,9 @@ struct DeviceManage: View {
                     HStack {
                         Spacer()
                         Text(device.assignedTo != "None" ? "In Use: " : "Available")
-                            .font(.system(size: geometry.size.height * 0.01, weight: .heavy))
+                            .font(.system(size: geometry.size.height * 0.014, weight: .heavy))
                         Text(device.assignedTo != "None" ? device.assignedTo : "")
-                            .font(.system(size: geometry.size.height * 0.01, weight: .regular))
+                            .font(.system(size: geometry.size.height * 0.014, weight: .regular))
                         Spacer()
                     }
                     .frame(width: geometry.size.width * 0.3)
@@ -350,9 +356,9 @@ struct DeviceManage: View {
                     HStack {
                         Spacer()
                         Text(batteryStatusText)
-                            .font(.system(size: geometry.size.height * 0.01, weight: .heavy))
+                            .font(.system(size: geometry.size.height * 0.014, weight: .heavy))
                         Text("\(device.devBattery)%")
-                            .font(.system(size: geometry.size.height * 0.01, weight: .regular))
+                            .font(.system(size: geometry.size.height * 0.014, weight: .regular))
                         Spacer()
                     }
                     .frame(width: geometry.size.width * 0.3)
