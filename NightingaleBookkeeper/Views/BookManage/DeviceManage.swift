@@ -1,21 +1,14 @@
-//
-//  BookManage.swift
-//  NightingaleBookkeeper
-//
-//  Created by Peter Iacobelli on 6/6/24.
-//
-
 import SwiftUI
-import SceneKit
+import Foundation
 
 struct DeviceInfoResponse: Codable {
     let message: String
     let data: [WatchData]
 }
 
-struct SelectedDeviceInfoResponse: Codable {
+struct DeviceLogResponse: Codable {
     let message: String
-    let device: SelectedDeviceData
+    let data: [DeviceLogData]
 }
 
 struct WatchData: Codable {
@@ -26,16 +19,10 @@ struct WatchData: Codable {
     let devBattery: String
 }
 
-struct SelectedDeviceData: Codable {
+struct DeviceLogData: Codable {
     let devID: String
-    let devType: String
-    let orgID: String
     let assignedTo: String
-    let devBattery: String
-    let firstName: String?
-    let lastName: String?
-    let ptID: String?
-    let ptImage: String?
+    let swapTime: String
 }
 
 struct DeviceManage: View {
@@ -50,7 +37,7 @@ struct DeviceManage: View {
     @State private var errorMessage: String? = nil
     
     @State private var deviceInfo: [WatchData] = []
-    @State private var selectedDeviceInfo: SelectedDeviceData? = nil
+    @State private var selectedDeviceLog: [DeviceLogData] = []
     @State private var watchCells: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
     @State private var selectedDeviceID: String = ""
     
@@ -103,85 +90,69 @@ struct DeviceManage: View {
                             }
                         }
                     }
-                    .opacity(selectedDeviceInfo != nil ? 0.2 : 1.0)
+                    .opacity(selectedDeviceID.isEmpty ? 1.0 : 0.2)
                     
-                    if let device = selectedDeviceInfo {
+                    if !selectedDeviceID.isEmpty {
                         VStack(alignment: .leading) {
-                            HStack {
-                                Text("Device Type: ")
-                                    .font(.system(size: geometry.size.height * 0.02, weight: .bold))
-                                Text(device.devType)
-                                    .font(.system(size: geometry.size.height * 0.02))
-                            }
-                            .padding(.bottom, 8)
+                            Text("Device Assignment Log")
+                                .font(.system(size: geometry.size.height * 0.03, weight: .bold))
+                                .foregroundColor(Color.white)
                             
-                            HStack {
-                                Text("Device ID: ")
-                                    .font(.system(size: geometry.size.height * 0.02, weight: .bold))
-                                Text(device.devID)
-                                    .font(.system(size: geometry.size.height * 0.02))
-                            }
-                            .padding(.bottom, 8)
                             
-                            HStack {
-                                Text("Organization ID: ")
-                                    .font(.system(size: geometry.size.height * 0.02, weight: .bold))
-                                Text(device.orgID)
-                                    .font(.system(size: geometry.size.height * 0.02))
-                            }
-                            .padding(.bottom, 8)
-                            
-                            HStack {
-                                Text("Assigned To: ")
-                                    .font(.system(size: geometry.size.height * 0.02, weight: .bold))
-                                Text(device.assignedTo)
-                                    .font(.system(size: geometry.size.height * 0.02))
-                            }
-                            .padding(.bottom, 8)
-                            
-                            HStack {
-                                Text("Battery: ")
-                                    .font(.system(size: geometry.size.height * 0.02, weight: .bold))
-                                Text(device.devBattery)
-                                    .font(.system(size: geometry.size.height * 0.02))
-                            }
-                            .padding(.bottom, 8)
-                            
-                            if let firstName = device.firstName, let lastName = device.lastName {
-                                HStack {
-                                    Text("Patient Name: ")
-                                        .font(.system(size: geometry.size.height * 0.02, weight: .bold))
-                                    Text("\(firstName) \(lastName)")
-                                        .font(.system(size: geometry.size.height * 0.02))
+                            ScrollView {
+                                LazyVStack {
+                                    ForEach(selectedDeviceLog, id: \.swapTime) { log in
+                                        VStack(alignment: .leading) {
+                                            HStack {
+                                                Text("Device:")
+                                                    .font(.system(size: geometry.size.height * 0.02, weight: .bold))
+                                                    .foregroundColor(Color.white)
+                                                
+                                                Text("\(log.devID)")
+                                                    .font(.system(size: geometry.size.height * 0.018, weight: .semibold))
+                                                    .italic()
+                                                    .foregroundColor(Color.white)
+                                            }
+                                            .padding(.vertical, geometry.size.height * 0.01)
+                                            
+                                            HStack {
+                                                Text("Assigned To:")
+                                                    .font(.system(size: geometry.size.height * 0.02, weight: .bold))
+                                                    .foregroundColor(Color.white)
+                                                
+                                                Text("\(log.assignedTo != "Device Removed" ? "Pt #\(log.assignedTo)" : "Device Removed")")
+                                                    .font(.system(size: geometry.size.height * 0.018, weight: .semibold))
+                                                    .italic()
+                                                    .foregroundColor(Color.white)
+                                                Spacer()
+                                            }
+                                            .padding(.vertical, geometry.size.height * 0.01)
+                                            
+                                            HStack {
+                                                Text("Swap Time: ")
+                                                    .font(.system(size: geometry.size.height * 0.02, weight: .bold))
+                                                    .foregroundColor(Color.white)
+                                                
+                                                Text("\(formatDate(log.swapTime))")
+                                                    .font(.system(size: geometry.size.height * 0.018, weight: .semibold))
+                                                    .italic()
+                                                    .foregroundColor(Color.white)
+                                                Spacer()
+                                            }
+                                            .padding(.vertical, geometry.size.height * 0.01)
+                                        }
+                                        .padding(.vertical, geometry.size.height * 0.04)
+                                        .background(Color(hex: 0x222222))
+                                        Divider()
+                                            .background(Color.white)
+                                           
+                                    }
                                 }
-                                .padding(.bottom, 8)
                             }
-                            
-                            if let ptID = device.ptID {
-                                HStack {
-                                    Text("Patient ID: ")
-                                        .font(.system(size: geometry.size.height * 0.02, weight: .bold))
-                                    Text(ptID)
-                                        .font(.system(size: geometry.size.height * 0.02))
-                                }
-                                .padding(.bottom, 8)
-                            }
-                            
-                            if let ptImage = device.ptImage, let imageData = Data(base64Encoded: ptImage), let uiImage = UIImage(data: imageData) {
-                                                            HStack {
-                                                                Text("Patient Image: ")
-                                                                    .font(.system(size: geometry.size.height * 0.02, weight: .bold))
-                                                                Image(uiImage: uiImage)
-                                                                    .resizable()
-                                                                    .aspectRatio(contentMode: .fit)
-                                                                    .frame(width: 100, height: 100)
-                                                            }
-                                                            .padding(.bottom, 8)
-                                                        }
                             
                             Button(action: {
-                                selectedDeviceInfo = nil
                                 selectedDeviceID = ""
+                                selectedDeviceLog = []
                             }) {
                                 Text("Close")
                                     .font(.system(size: geometry.size.height * 0.02, weight: .bold))
@@ -191,11 +162,12 @@ struct DeviceManage: View {
                                     .cornerRadius(8)
                                     .shadow(color: .gray, radius: 3, x: 0, y: 0)
                             }
+                            .padding(.top, 16)
                         }
                         .padding()
                         .frame(height: geometry.size.height * 0.6)
                         .frame(width: geometry.size.width * 0.8)
-                        .background(Color.white)
+                        .background(Color(hex: 0x222222))
                         .border(Color(hex: 0xDFE6E9), width: geometry.size.width * 0.003)
                         .cornerRadius(geometry.size.width * 0.01)
                         .overlay(
@@ -305,7 +277,19 @@ struct DeviceManage: View {
             }
         }
     }
-    
+    private func formatDate(_ isoDateString: String) -> String {
+        let isoFormatter = ISO8601DateFormatter()
+        isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        
+        guard let date = isoFormatter.date(from: isoDateString) else {
+            return "Invalid date"
+        }
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM/dd/yyyy HH:mm:ss"
+        
+        return dateFormatter.string(from: date)
+    }
     private func deviceCell(for device: WatchData, geometry: GeometryProxy) -> some View {
         Button(action: {
             selectedDeviceID = device.devID
@@ -457,7 +441,7 @@ struct DeviceManage: View {
     }
     
     private func getSelectedDeviceInfo() {
-        let url = URL(string: "http://172.20.10.2:5000/get-selected-device")!
+        let url = URL(string: "http://172.20.10.2:5000/get-selected-device-log")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -501,10 +485,10 @@ struct DeviceManage: View {
             
             if response.statusCode == 200 {
                 do {
-                    let decodedResponse = try JSONDecoder().decode(SelectedDeviceInfoResponse.self, from: data)
+                    let decodedResponse = try JSONDecoder().decode(DeviceLogResponse.self, from: data)
                     DispatchQueue.main.async {
-                        self.selectedDeviceInfo = decodedResponse.device  // Directly set the device
-                        print("Selected device info updated: \(decodedResponse.device)")  // Debugging print
+                        self.selectedDeviceLog = decodedResponse.data
+                        print("Selected device log updated: \(decodedResponse.data)")  // Debugging print
                     }
                 } catch {
                     DispatchQueue.main.async {
