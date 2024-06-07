@@ -9,6 +9,8 @@ import Foundation
 
 enum AppView {
     case DeviceManage
+    case AddDevice
+    case RemoveDevice
     case LoginAuth
     case ResetAuth
 }

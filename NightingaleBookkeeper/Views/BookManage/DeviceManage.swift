@@ -29,17 +29,17 @@ struct DeviceManage: View {
     @Binding var currentView: AppView
     @Binding var authenticatedUsername: String
     @Binding var authenticatedOrgID: String
+    @Binding var selectedDeviceID: String
+    @State private var errorMessage: String? = nil
     let gradient = LinearGradient(
         gradient: Gradient(colors: [Color(hex: 0x222832), Color(hex: 0x33435F)]),
         startPoint: .leading,
         endPoint: .trailing
     )
-    @State private var errorMessage: String? = nil
     
     @State private var deviceInfo: [WatchData] = []
     @State private var selectedDeviceLog: [DeviceLogData] = []
     @State private var watchCells: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
-    @State private var selectedDeviceID: String = ""
     
     var body: some View {
         GeometryReader { geometry in
@@ -149,9 +149,15 @@ struct DeviceManage: View {
                                             
                                         }
                                     } else {
-                                       Text("No previous assignment info.")
-                                           .font(.system(size: geometry.size.height * 0.016, weight: .semibold))
-                                           .foregroundColor(Color.white)
+                                        Spacer()
+                                        HStack {
+                                            Text("No previous assignment info.")
+                                                .font(.system(size: geometry.size.height * 0.016, weight: .semibold))
+                                                .foregroundColor(Color.white)
+                                                
+                                            Spacer()
+                                        }
+                                        Spacer()
                                            
                                    }
                                 }

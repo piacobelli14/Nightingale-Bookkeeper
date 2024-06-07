@@ -17,6 +17,8 @@
 		CB4D87632C12574D004A48C0 /* ResetAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4D87622C12574D004A48C0 /* ResetAuth.swift */; };
 		CB4D87652C126271004A48C0 /* WatchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4D87642C126271004A48C0 /* WatchManager.swift */; };
 		CB4D87672C1262A5004A48C0 /* AppleWatch.dae in Resources */ = {isa = PBXBuildFile; fileRef = CB4D87662C1262A5004A48C0 /* AppleWatch.dae */; };
+		CB4D87692C131B37004A48C0 /* AddDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4D87682C131B37004A48C0 /* AddDevice.swift */; };
+		CB4D876B2C131B51004A48C0 /* RemoveDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4D876A2C131B51004A48C0 /* RemoveDevice.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +33,8 @@
 		CB4D87622C12574D004A48C0 /* ResetAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetAuth.swift; sourceTree = "<group>"; };
 		CB4D87642C126271004A48C0 /* WatchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchManager.swift; sourceTree = "<group>"; };
 		CB4D87662C1262A5004A48C0 /* AppleWatch.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = AppleWatch.dae; sourceTree = "<group>"; };
+		CB4D87682C131B37004A48C0 /* AddDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDevice.swift; sourceTree = "<group>"; };
+		CB4D876A2C131B51004A48C0 /* RemoveDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveDevice.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +125,8 @@
 			isa = PBXGroup;
 			children = (
 				CB4D87602C1256CC004A48C0 /* DeviceManage.swift */,
+				CB4D87682C131B37004A48C0 /* AddDevice.swift */,
+				CB4D876A2C131B51004A48C0 /* RemoveDevice.swift */,
 			);
 			path = BookManage;
 			sourceTree = "<group>";
@@ -199,8 +205,10 @@
 				CB09B70B2C124B5300946F3F /* ViewControlEnum.swift in Sources */,
 				CB4D87632C12574D004A48C0 /* ResetAuth.swift in Sources */,
 				CB09B70D2C124D5500946F3F /* LoginAuth.swift in Sources */,
+				CB4D87692C131B37004A48C0 /* AddDevice.swift in Sources */,
 				CB4D87612C1256CC004A48C0 /* DeviceManage.swift in Sources */,
 				CB4D87652C126271004A48C0 /* WatchManager.swift in Sources */,
+				CB4D876B2C131B51004A48C0 /* RemoveDevice.swift in Sources */,
 				CB09B6FB2C123A7700946F3F /* ContentView.swift in Sources */,
 				CB09B6F92C123A7700946F3F /* NightingaleBookkeeperApp.swift in Sources */,
 			);

@@ -11,11 +11,16 @@ struct ContentView: View {
     @State private var currentView: AppView = .DeviceManage
     @State private var authenticatedUsername: String = "piacobelli"
     @State private var authenticatedOrgID: String = "10000"
+    @State private var selectedDeviceID: String = ""
     
     var body: some View {
         switch currentView {
         case .DeviceManage:
-            DeviceManage(currentView: $currentView, authenticatedUsername: $authenticatedUsername, authenticatedOrgID: $authenticatedOrgID)
+            DeviceManage(currentView: $currentView, authenticatedUsername: $authenticatedUsername, authenticatedOrgID: $authenticatedOrgID, selectedDeviceID: $selectedDeviceID)
+        case .AddDevice:
+            AddDevice(currentView: $currentView, authenticatedUsername: $authenticatedUsername, authenticatedOrgID: $authenticatedOrgID, selectedDeviceID: $selectedDeviceID)
+        case .RemoveDevice:
+            RemoveDevice(currentView: $currentView, authenticatedUsername: $authenticatedUsername, authenticatedOrgID: $authenticatedOrgID, selectedDeviceID: $selectedDeviceID)
         case .LoginAuth:
             LoginAuth(currentView: $currentView, authenticatedUsername: $authenticatedUsername, authenticatedOrgID: $authenticatedOrgID)
         case .ResetAuth:
