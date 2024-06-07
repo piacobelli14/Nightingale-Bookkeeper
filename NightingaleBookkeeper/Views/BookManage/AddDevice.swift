@@ -101,7 +101,7 @@ struct AddDevice: View {
                         .shadow(color: .gray, radius: geometry.size.width * 0.004)
 
                 }
-                .padding(.top, geometry.size.height * 0.05)
+                .padding(.top, geometry.size.height * 0.02)
                 
                 
                 VStack {
@@ -124,7 +124,7 @@ struct AddDevice: View {
                                 .italic()
                             
                             Text(newDevID)
-                                .font(.system(size: geometry.size.height * 0.012, weight: .semibold))
+                                .font(.system(size: geometry.size.height * 0.016, weight: .semibold))
                                 .foregroundColor(Color.black)
                                 .italic()
                                 .padding(.top, geometry.size.height * 0.002)
@@ -135,7 +135,7 @@ struct AddDevice: View {
                     
                 }
                 .frame(width: geometry.size.width * 0.44, height: geometry.size.height * 0.32)
-                .padding(.vertical, geometry.size.height * 0.03)
+                .padding(.vertical, geometry.size.height * 0.015)
                 .padding(.horizontal, geometry.size.width * 0.005)
                 .background(Color(hex: 0xF6FCFE).opacity(0.8))
                 .border(Color(hex: 0xDFE6E9), width: geometry.size.width * 0.003)
@@ -146,6 +146,33 @@ struct AddDevice: View {
                 )
                 .shadow(color: .gray, radius: geometry.size.width * 0.004)
                 .padding(.top, geometry.size.height * 0.05)
+                
+                
+                HStack {
+                    Button(action: {
+                    }) {
+                        HStack {
+                            Text("Register New Device")
+                                .font(.system(size: geometry.size.height * 0.016, weight: .semibold, design: .default))
+                                .foregroundColor(Color(hex: 0xF5F5F5))
+                        }
+                        .frame(width: geometry.size.width * 0.6)
+                        .padding(.vertical, geometry.size.height * 0.016)
+                        .background(Color(hex: 0x3C537A))
+                        .cornerRadius(geometry.size.width * 0.01)
+                        .shadow(color: .gray, radius: geometry.size.width * 0.004)
+                    }
+                }
+                .padding(.top, geometry.size.height * 0.1)
+                
+                if let errorMessage = errorMessage {
+                    Text(errorMessage)
+                        .foregroundColor(.red)
+                        .font(.system(size: geometry.size.height * 0.012))
+                        .padding(.top, geometry.size.height * 0.02)
+                }
+                
+                
                 
                 Spacer()
                 
