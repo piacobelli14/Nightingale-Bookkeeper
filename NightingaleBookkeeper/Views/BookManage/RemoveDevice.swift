@@ -263,7 +263,7 @@ struct RemoveDevice: View {
         
         let requestBody: [String: Any] = [
             "orgID": authenticatedOrgID,
-            "devID": removeDevID
+            "removeDevID": removeDevID
         ]
         
         do {
