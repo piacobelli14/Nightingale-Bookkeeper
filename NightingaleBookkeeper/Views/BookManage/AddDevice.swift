@@ -87,6 +87,8 @@ struct AddDevice: View {
                     
                     TextField("Enter a Device ID", text:  $newDevID)
                         .multilineTextAlignment(.center).foregroundColor(.black)
+                        .autocorrectionDisabled(false)
+                        .autocapitalization(.none)
                         .frame(width: geometry.size.width * 0.6)
                         .padding(.vertical, geometry.size.width * 0.02)
                         .font(.system(size: geometry.size.height * 0.014, weight: .light))
@@ -150,6 +152,7 @@ struct AddDevice: View {
                 
                
                 Button(action: {
+                    registerDevice()
                 }) {
                     HStack {
                         Text("Register New Device")
@@ -182,5 +185,55 @@ struct AddDevice: View {
                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
             }
         }
+    }
+    private func registerDevice() {
+        guard !newDevType.isEmpty, !newDevID.isEmpty else {
+            self.errorMessage = "All fields are required."
+            return
+        }
+
+        let requestBody: [String: Any] = [
+            "devType": newDevType,
+            "devID": newDevID,
+            "orgID": authenticatedOrgID
+        ]
+
+        let url = URL(string: "http://172.20.10.2:5000/add-device")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try? JSONSerialization.data(withJSONObject: requestBody)
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    self.errorMessage = "An error occurred: \(error.localizedDescription)"
+                }
+                return
+            }
+
+            guard let data = data, let response = response as? HTTPURLResponse else {
+                DispatchQueue.main.async {
+                    self.errorMessage = "No data received from the server."
+                }
+                return
+            }
+
+            if response.statusCode == 200 {
+                DispatchQueue.main.async {
+                    self.currentView = .DeviceManage
+                }
+            } else {
+                DispatchQueue.main.async {
+                    if let responseBody = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                       let message = responseBody["message"] as? String {
+                        self.errorMessage = message
+                    } else {
+                        self.errorMessage = "An unknown error occurred."
+                    }
+                }
+            }
+        }
+        .resume()
     }
 }
