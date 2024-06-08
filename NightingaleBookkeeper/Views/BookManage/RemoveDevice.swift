@@ -4,7 +4,6 @@
 //
 //  Created by Peter Iacobelli on 6/7/24.
 //
-
 import SwiftUI
 
 struct RemoveDevice: View {
@@ -151,6 +150,9 @@ struct RemoveDevice: View {
                 .frame(width: geometry.size.width * 0.6)
                 
                 Button(action: {
+                    if validationCheck {
+                        
+                    }
                 }) {
                     HStack {
                         Text("Remove Device")
@@ -180,11 +182,12 @@ struct RemoveDevice: View {
                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
             }
             .onAppear {
-                getDeviceAvailableDevices()
+                getAvailableDeviceInfo()
             }
         }
     }
-    private func getDeviceAvailableDevices() {
+
+    private func getAvailableDeviceInfo() {
         let url = URL(string: "http://172.20.10.2:5000/get-devices")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -231,8 +234,10 @@ struct RemoveDevice: View {
                 do {
                     let decodedResponse = try JSONDecoder().decode(DeviceInfoResponse.self, from: data)
                     DispatchQueue.main.async {
-                        // Filter devices where assignedTo is "None"
-                        self.devIDs = decodedResponse.data.filter { $0.assignedTo == "None" }.map { $0.devID }
+                        // Set watchDataList to filter devices where assignedTo is "None"
+                        self.watchDataList = decodedResponse.data.filter { $0.assignedTo == "None" }
+                        // Set devIDs from filtered watchDataList
+                        self.devIDs = self.watchDataList.map { $0.devID }
                         print(self.devIDs)
                     }
                 } catch {
@@ -250,5 +255,4 @@ struct RemoveDevice: View {
         }
         .resume()
     }
-
 }
