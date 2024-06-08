@@ -150,8 +150,8 @@ struct RemoveDevice: View {
                 .frame(width: geometry.size.width * 0.6)
                 
                 Button(action: {
-                    if validationCheck {
-                        
+                    if validationCheck && !removeDevID.isEmpty {
+                        removeDevice()
                     }
                 }) {
                     HStack {
@@ -255,4 +255,62 @@ struct RemoveDevice: View {
         }
         .resume()
     }
+    private func removeDevice() {
+        let url = URL(string: "http://172.20.10.2:5000/remove-device")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let requestBody: [String: Any] = [
+            "orgID": authenticatedOrgID,
+            "devID": removeDevID
+        ]
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: requestBody, options: [])
+        } catch {
+            self.errorMessage = "JSON serialization error: \(error.localizedDescription)"
+            print(self.errorMessage)
+            return
+        }
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    self.errorMessage = "Network error: \(error.localizedDescription)"
+                    print(self.errorMessage)
+                }
+                return
+            }
+            
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    self.errorMessage = "No data received from the server"
+                    print(self.errorMessage)
+                }
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse else {
+                DispatchQueue.main.async {
+                    self.errorMessage = "Invalid response from the server"
+                    print(self.errorMessage)
+                }
+                return
+            }
+            
+            if response.statusCode == 200 {
+                DispatchQueue.main.async {
+                    self.currentView = .DeviceManage
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.errorMessage = "Server error with status code: \(response.statusCode)"
+                    print(self.errorMessage)
+                }
+            }
+        }
+        .resume()
+    }
+
 }
