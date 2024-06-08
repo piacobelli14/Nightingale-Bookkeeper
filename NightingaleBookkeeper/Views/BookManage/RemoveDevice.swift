@@ -23,6 +23,9 @@ struct RemoveDevice: View {
     @State private var removeDevType: String = ""
     @State private var validationCheck: Bool = false
     
+    @State private var watchDataList: [WatchData] = []
+    @State private var devIDs: [String] = []
+    
     var body: some View {
         GeometryReader { geometry in
             VStack {
@@ -56,13 +59,16 @@ struct RemoveDevice: View {
                         .foregroundColor(Color.white)
                         .shadow(color: .gray, radius: geometry.size.width * 0.05)
                     Menu {
-                        ForEach(Array(["Apple Watch SE", "Fitbit Sense"]), id: \.self) { type in
-                            Button(type) {
-                                removeDevID = type
+                        ForEach(devIDs, id: \.self) { devID in
+                            Button(devID) {
+                                removeDevID = devID
+                                if let device = watchDataList.first(where: { $0.devID == devID }) {
+                                    removeDevType = device.devType
+                                }
                             }
                         }
                     } label: {
-                        Text(removeDevID == "" ? "Select Device Type" : removeDevID)
+                        Text(removeDevID == "" ? "Select Device ID" : removeDevID)
                             .multilineTextAlignment(.center).foregroundColor(.black)
                             .frame(width: geometry.size.width * 0.6)
                             .padding(.vertical, geometry.size.width * 0.02)
@@ -78,6 +84,7 @@ struct RemoveDevice: View {
                             .shadow(color: .gray, radius: geometry.size.width * 0.004)
                     }
                     .accentColor(.black)
+
                 }
                 
                 VStack {
@@ -172,6 +179,76 @@ struct RemoveDevice: View {
             .onTapGesture {
                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
             }
+            .onAppear {
+                getDeviceAvailableDevices()
+            }
         }
     }
+    private func getDeviceAvailableDevices() {
+        let url = URL(string: "http://172.20.10.2:5000/get-devices")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let requestBody: [String: Any] = [
+            "orgID": authenticatedOrgID
+        ]
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: requestBody, options: [])
+        } catch {
+            self.errorMessage = "JSON serialization error: \(error.localizedDescription)"
+            print(self.errorMessage)
+            return
+        }
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    self.errorMessage = "Network error: \(error.localizedDescription)"
+                    print(self.errorMessage)
+                }
+                return
+            }
+            
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    self.errorMessage = "No data received from the server"
+                    print(self.errorMessage)
+                }
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse else {
+                DispatchQueue.main.async {
+                    self.errorMessage = "Invalid response from the server"
+                    print(self.errorMessage)
+                }
+                return
+            }
+            
+            if response.statusCode == 200 {
+                do {
+                    let decodedResponse = try JSONDecoder().decode(DeviceInfoResponse.self, from: data)
+                    DispatchQueue.main.async {
+                        // Filter devices where assignedTo is "None"
+                        self.devIDs = decodedResponse.data.filter { $0.assignedTo == "None" }.map { $0.devID }
+                        print(self.devIDs)
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        self.errorMessage = "JSON decoding error: \(error.localizedDescription)"
+                        print(self.errorMessage)
+                    }
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.errorMessage = "Server error with status code: \(response.statusCode)"
+                    print(self.errorMessage)
+                }
+            }
+        }
+        .resume()
+    }
+
 }
