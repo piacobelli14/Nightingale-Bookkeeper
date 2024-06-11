@@ -8,8 +8,9 @@
 import Foundation
 
 struct LoginResponse: Codable {
-    let username: String
-    let orgID: String
+    let userid: String
+    let orgid: String
+    let token: String
 }
 
 struct DeviceInfoResponse: Codable {

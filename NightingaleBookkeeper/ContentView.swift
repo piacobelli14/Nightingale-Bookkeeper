@@ -23,8 +23,7 @@ struct ContentView: View {
                         deleteTokenFromKeychain()
                         authenticatedUsername = ""
                         authenticatedOrgID = ""
-                        selectedPatientIDs = [""]
-                        selectedEventID = ""
+                        selectedDeviceID = ""
                     }
             case .ResetAuth:
                 ResetAuth(currentView: $currentView)

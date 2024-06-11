@@ -284,10 +284,12 @@ struct LoginAuth: View {
 
             do {
                 let loginResponse = try JSONDecoder().decode(LoginResponse.self, from: data)
+                saveTokenToKeychain(token: loginResponse.token)
+                
                 DispatchQueue.main.async {
                     self.isLoginSuccessful = true
-                    self.authenticatedUsername = loginResponse.username
-                    self.authenticatedOrgID = loginResponse.orgID
+                    self.authenticatedUsername = loginResponse.userid
+                    self.authenticatedOrgID = loginResponse.orgid
                     self.currentView = .DeviceManage
                 }
             } catch {
