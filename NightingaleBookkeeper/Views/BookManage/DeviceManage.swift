@@ -1,30 +1,6 @@
 import SwiftUI
 import Foundation
 
-struct DeviceInfoResponse: Codable {
-    let message: String
-    let data: [WatchData]
-}
-
-struct DeviceLogResponse: Codable {
-    let message: String
-    let data: [DeviceLogData]
-}
-
-struct WatchData: Codable {
-    let devID: String
-    let devType: String
-    let orgID: String
-    let assignedTo: String
-    let devBattery: String
-}
-
-struct DeviceLogData: Codable {
-    let devID: String
-    let assignedTo: String
-    let swapTime: String
-}
-
 struct DeviceManage: View {
     @Binding var currentView: AppView
     @Binding var authenticatedUsername: String
