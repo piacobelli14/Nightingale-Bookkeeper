@@ -59,21 +59,21 @@ struct DeviceManage: View {
                 
                 Spacer()
                 
-                ZStack {
-                    ScrollView {
-                        LazyVGrid(columns: watchCells, spacing: geometry.size.width * 0.03) {
-                            ForEach(deviceInfo, id: \.devID) { device in
-                                deviceCell(for: device, geometry: geometry)
+                if isLoading {
+                    ProgressView()
+                        .scaleEffect(2)
+                        .progressViewStyle(CircularProgressViewStyle(tint: .blue))
+                        .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                } else {
+                    ZStack {
+                        ScrollView {
+                            LazyVGrid(columns: watchCells, spacing: geometry.size.width * 0.03) {
+                                ForEach(deviceInfo, id: \.devID) { device in
+                                    deviceCell(for: device, geometry: geometry)
+                                }
                             }
                         }
-                    }
-                    .opacity(selectedDeviceID.isEmpty ? 1.0 : 0.2)
-                    if isLoading {
-                        ProgressView()
-                            .scaleEffect(2)
-                            .progressViewStyle(CircularProgressViewStyle(tint: .blue))
-                            .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
-                    } else {
+                        .opacity(selectedDeviceID.isEmpty ? 1.0 : 0.2)
                         if !selectedDeviceID.isEmpty {
                             VStack(alignment: .leading) {
                                 Text("Device Assignment Log")
@@ -375,13 +375,14 @@ struct DeviceManage: View {
     
     private func getDeviceInfo() {
         guard let token = loadTokenFromKeychain() else {
+          
             return
         }
         
         isLoading = true
         
         let requestBody: [String: Any] = [
-            "orgID": authenticatedOrgID
+            "organizationID": authenticatedOrgID
         ]
         
         let url = URL(string: "http://172.20.10.2:5000/get-devices")!
