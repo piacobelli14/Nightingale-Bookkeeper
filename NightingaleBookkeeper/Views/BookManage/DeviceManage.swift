@@ -395,7 +395,6 @@ struct DeviceManage: View {
             request.httpBody = try JSONSerialization.data(withJSONObject: requestBody, options: [])
         } catch {
             self.errorMessage = "JSON serialization error: \(error.localizedDescription)"
-            print(self.errorMessage)
             return
         }
         
@@ -403,7 +402,6 @@ struct DeviceManage: View {
             if let error = error {
                 DispatchQueue.main.async {
                     self.errorMessage = "Network error: \(error.localizedDescription)"
-                    print(self.errorMessage)
                 }
                 return
             }
@@ -411,7 +409,6 @@ struct DeviceManage: View {
             guard let data = data else {
                 DispatchQueue.main.async {
                     self.errorMessage = "No data received from the server"
-                    print(self.errorMessage)
                 }
                 return
             }
@@ -419,7 +416,6 @@ struct DeviceManage: View {
             guard let response = response as? HTTPURLResponse else {
                 DispatchQueue.main.async {
                     self.errorMessage = "Invalid response from the server"
-                    print(self.errorMessage)
                 }
                 return
             }
@@ -437,13 +433,11 @@ struct DeviceManage: View {
                 } catch {
                     DispatchQueue.main.async {
                         self.errorMessage = "JSON decoding error: \(error.localizedDescription)"
-                        print(self.errorMessage)
                     }
                 }
             } else {
                 DispatchQueue.main.async {
                     self.errorMessage = "Server error with status code: \(response.statusCode)"
-                    print(self.errorMessage)
                 }
             }
         }
@@ -471,7 +465,6 @@ struct DeviceManage: View {
             request.httpBody = try JSONSerialization.data(withJSONObject: requestBody, options: [])
         } catch {
             self.errorMessage = "JSON serialization error: \(error.localizedDescription)"
-            print(self.errorMessage)
             return
         }
         
@@ -479,7 +472,6 @@ struct DeviceManage: View {
             if let error = error {
                 DispatchQueue.main.async {
                     self.errorMessage = "Network error: \(error.localizedDescription)"
-                    print(self.errorMessage)
                 }
                 return
             }
@@ -487,7 +479,6 @@ struct DeviceManage: View {
             guard let data = data else {
                 DispatchQueue.main.async {
                     self.errorMessage = "No data received from the server"
-                    print(self.errorMessage)
                 }
                 return
             }
@@ -495,7 +486,6 @@ struct DeviceManage: View {
             guard let response = response as? HTTPURLResponse else {
                 DispatchQueue.main.async {
                     self.errorMessage = "Invalid response from the server"
-                    print(self.errorMessage)
                 }
                 return
             }
@@ -505,18 +495,15 @@ struct DeviceManage: View {
                     let decodedResponse = try JSONDecoder().decode(DeviceLogResponse.self, from: data)
                     DispatchQueue.main.async {
                         self.selectedDeviceLog = decodedResponse.data
-                        print("Selected device log updated: \(decodedResponse.data)")  // Debugging print
                     }
                 } catch {
                     DispatchQueue.main.async {
                         self.errorMessage = "JSON decoding error: \(error.localizedDescription)"
-                        print(self.errorMessage)
                     }
                 }
             } else {
                 DispatchQueue.main.async {
                     self.errorMessage = "Server error with status code: \(response.statusCode)"
-                    print(self.errorMessage)
                 }
             }
         }

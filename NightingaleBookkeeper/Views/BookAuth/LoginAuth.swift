@@ -260,11 +260,6 @@ struct LoginAuth: View {
             "password": password
         ]
 
-        guard let url = URL(string: "http://172.20.10.2:5000/user-authentication") else {
-            print("Invalid URL")
-            return
-        }
-
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -272,7 +267,6 @@ struct LoginAuth: View {
 
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
-                print("Login error: \(error)")
                 self.isLoginSuccessful = false
                 return
             }
@@ -293,7 +287,6 @@ struct LoginAuth: View {
                     self.currentView = .DeviceManage
                 }
             } catch {
-                print("Decoding error: \(error)")
                 self.isLoginSuccessful = false
                 self.errorMessage = "That username or password is incorrect."
             }
