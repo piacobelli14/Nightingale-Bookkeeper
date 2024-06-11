@@ -197,9 +197,9 @@ struct AddDevice: View {
         }
 
         let requestBody: [String: Any] = [
+            "organizationID": authenticatedOrgID
             "devType": newDevType,
             "devID": newDevID,
-            "orgID": authenticatedOrgID
         ]
 
         let url = URL(string: "http://172.20.10.2:5000/add-device")!

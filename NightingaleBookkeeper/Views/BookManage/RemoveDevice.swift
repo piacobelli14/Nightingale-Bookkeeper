@@ -193,7 +193,7 @@ struct RemoveDevice: View {
         }
         
         let requestBody: [String: Any] = [
-            "orgID": authenticatedOrgID
+            "organizationID": authenticatedOrgID
         ]
         
         let url = URL(string: "http://172.20.10.2:5000/get-devices")!
@@ -265,7 +265,7 @@ struct RemoveDevice: View {
         }
         
         let requestBody: [String: Any] = [
-            "orgID": authenticatedOrgID,
+            "organizationID": authenticatedOrgID,
             "removeDevID": removeDevID
         ]
         

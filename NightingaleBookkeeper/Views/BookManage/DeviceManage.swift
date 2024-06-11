@@ -62,7 +62,7 @@ struct DeviceManage: View {
                 if isLoading {
                     ProgressView()
                         .scaleEffect(2)
-                        .progressViewStyle(CircularProgressViewStyle(tint: .blue))
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
                         .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
                 } else {
                     ZStack {
@@ -173,11 +173,10 @@ struct DeviceManage: View {
                             .shadow(color: .gray, radius: geometry.size.width * 0.004)
                         }
                     }
+                    .frame(height: geometry.size.height * 0.80)
+                    .frame(width: geometry.size.width * 0.96)
+                    .padding(.top, geometry.size.height * 0.02)
                 }
-                .frame(height: geometry.size.height * 0.80)
-                .frame(width: geometry.size.width * 0.96)
-                .padding(.top, geometry.size.height * 0.02)
-                
                 Spacer()
                 
                 HStack(alignment: .center) {
@@ -457,7 +456,7 @@ struct DeviceManage: View {
         }
         
         let requestBody: [String: Any] = [
-            "orgID": authenticatedOrgID,
+            "organizationID": authenticatedOrgID,
             "devID": selectedDeviceID
         ]
         
