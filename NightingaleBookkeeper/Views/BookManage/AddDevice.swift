@@ -197,7 +197,7 @@ struct AddDevice: View {
         }
 
         let requestBody: [String: Any] = [
-            "organizationID": authenticatedOrgID
+            "organizationID": authenticatedOrgID,
             "devType": newDevType,
             "devID": newDevID,
         ]
