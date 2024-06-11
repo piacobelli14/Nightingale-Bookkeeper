@@ -188,14 +188,20 @@ struct RemoveDevice: View {
     }
 
     private func getAvailableDeviceInfo() {
-        let url = URL(string: "http://172.20.10.2:5000/get-devices")!
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        guard let token = loadTokenFromKeychain() else {
+            return
+        }
         
         let requestBody: [String: Any] = [
             "orgID": authenticatedOrgID
         ]
+        
+        let url = URL(string: "http://172.20.10.2:5000/get-devices")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.httpBody = try? JSONSerialization.data(withJSONObject: requestBody)
         
         do {
             request.httpBody = try JSONSerialization.data(withJSONObject: requestBody, options: [])
@@ -234,9 +240,7 @@ struct RemoveDevice: View {
                 do {
                     let decodedResponse = try JSONDecoder().decode(DeviceInfoResponse.self, from: data)
                     DispatchQueue.main.async {
-                        // Set watchDataList to filter devices where assignedTo is "None"
                         self.watchDataList = decodedResponse.data.filter { $0.assignedTo == "None" }
-                        // Set devIDs from filtered watchDataList
                         self.devIDs = self.watchDataList.map { $0.devID }
                         print(self.devIDs)
                     }
@@ -256,15 +260,21 @@ struct RemoveDevice: View {
         .resume()
     }
     private func removeDevice() {
-        let url = URL(string: "http://172.20.10.2:5000/remove-device")!
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        guard let token = loadTokenFromKeychain() else {
+            return
+        }
         
         let requestBody: [String: Any] = [
             "orgID": authenticatedOrgID,
             "removeDevID": removeDevID
         ]
+        
+        let url = URL(string: "http://172.20.10.2:5000/remove-device")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.httpBody = try? JSONSerialization.data(withJSONObject: requestBody)
         
         do {
             request.httpBody = try JSONSerialization.data(withJSONObject: requestBody, options: [])

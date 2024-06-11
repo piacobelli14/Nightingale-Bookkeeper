@@ -191,6 +191,10 @@ struct AddDevice: View {
             self.errorMessage = "All fields are required."
             return
         }
+        
+        guard let token = loadTokenFromKeychain() else {
+            return
+        }
 
         let requestBody: [String: Any] = [
             "devType": newDevType,
@@ -202,6 +206,7 @@ struct AddDevice: View {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         request.httpBody = try? JSONSerialization.data(withJSONObject: requestBody)
 
         URLSession.shared.dataTask(with: request) { data, response, error in

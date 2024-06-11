@@ -7,6 +7,7 @@ struct DeviceManage: View {
     @Binding var authenticatedOrgID: String
     @Binding var selectedDeviceID: String
     @State private var errorMessage: String? = nil
+    @State private var isLoading: Bool = false
     let gradient = LinearGradient(
         gradient: Gradient(colors: [Color(hex: 0x222832), Color(hex: 0x33435F)]),
         startPoint: .leading,
@@ -67,104 +68,110 @@ struct DeviceManage: View {
                         }
                     }
                     .opacity(selectedDeviceID.isEmpty ? 1.0 : 0.2)
-                    
-                    if !selectedDeviceID.isEmpty {
-                        VStack(alignment: .leading) {
-                            Text("Device Assignment Log")
-                                .font(.system(size: geometry.size.height * 0.03, weight: .bold))
-                                .foregroundColor(Color.white)
-                                .shadow(color: .gray, radius: 2, x: 0, y: 0)
-                            
-                            ScrollView {
-                                LazyVStack {
-                                    if selectedDeviceLog.count > 0 {
-                                        ForEach(selectedDeviceLog, id: \.swapTime) { log in
-                                            VStack(alignment: .leading) {
-                                                HStack {
-                                                    Text("Device:")
-                                                        .font(.system(size: geometry.size.height * 0.02, weight: .bold))
-                                                        .foregroundColor(Color.white)
+                    if isLoading {
+                        ProgressView()
+                            .scaleEffect(2)
+                            .progressViewStyle(CircularProgressViewStyle(tint: .blue))
+                            .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                    } else {
+                        if !selectedDeviceID.isEmpty {
+                            VStack(alignment: .leading) {
+                                Text("Device Assignment Log")
+                                    .font(.system(size: geometry.size.height * 0.03, weight: .bold))
+                                    .foregroundColor(Color.white)
+                                    .shadow(color: .gray, radius: 2, x: 0, y: 0)
+                                
+                                ScrollView {
+                                    LazyVStack {
+                                        if selectedDeviceLog.count > 0 {
+                                            ForEach(selectedDeviceLog, id: \.swapTime) { log in
+                                                VStack(alignment: .leading) {
+                                                    HStack {
+                                                        Text("Device:")
+                                                            .font(.system(size: geometry.size.height * 0.02, weight: .bold))
+                                                            .foregroundColor(Color.white)
+                                                        
+                                                        Text("\(log.devID)")
+                                                            .font(.system(size: geometry.size.height * 0.018, weight: .semibold))
+                                                            .italic()
+                                                            .foregroundColor(Color.white)
+                                                    }
+                                                    .padding(.vertical, geometry.size.height * 0.001)
                                                     
-                                                    Text("\(log.devID)")
-                                                        .font(.system(size: geometry.size.height * 0.018, weight: .semibold))
-                                                        .italic()
-                                                        .foregroundColor(Color.white)
+                                                    HStack {
+                                                        Text("Assigned To:")
+                                                            .font(.system(size: geometry.size.height * 0.02, weight: .bold))
+                                                            .foregroundColor(Color.white)
+                                                        
+                                                        Text("\(log.assignedTo != "Device Removed" ? "Pt #\(log.assignedTo)" : "Device Removed")")
+                                                            .font(.system(size: geometry.size.height * 0.018, weight: .semibold))
+                                                            .italic()
+                                                            .foregroundColor(Color.white)
+                                                        Spacer()
+                                                    }
+                                                    .padding(.vertical, geometry.size.height * 0.001)
+                                                    
+                                                    HStack {
+                                                        Text("Swap Time: ")
+                                                            .font(.system(size: geometry.size.height * 0.02, weight: .bold))
+                                                            .foregroundColor(Color.white)
+                                                        
+                                                        Text("\(formatDate(log.swapTime))")
+                                                            .font(.system(size: geometry.size.height * 0.018, weight: .semibold))
+                                                            .italic()
+                                                            .foregroundColor(Color.white)
+                                                        Spacer()
+                                                    }
+                                                    .padding(.vertical, geometry.size.height * 0.001)
                                                 }
-                                                .padding(.vertical, geometry.size.height * 0.001)
+                                                .padding(.vertical, geometry.size.height * 0.02)
+                                                .background(Color(hex: 0x222222))
+                                                Divider()
+                                                    .background(Color.white)
                                                 
-                                                HStack {
-                                                    Text("Assigned To:")
-                                                        .font(.system(size: geometry.size.height * 0.02, weight: .bold))
-                                                        .foregroundColor(Color.white)
-                                                    
-                                                    Text("\(log.assignedTo != "Device Removed" ? "Pt #\(log.assignedTo)" : "Device Removed")")
-                                                        .font(.system(size: geometry.size.height * 0.018, weight: .semibold))
-                                                        .italic()
-                                                        .foregroundColor(Color.white)
-                                                    Spacer()
-                                                }
-                                                .padding(.vertical, geometry.size.height * 0.001)
-                                                
-                                                HStack {
-                                                    Text("Swap Time: ")
-                                                        .font(.system(size: geometry.size.height * 0.02, weight: .bold))
-                                                        .foregroundColor(Color.white)
-                                                    
-                                                    Text("\(formatDate(log.swapTime))")
-                                                        .font(.system(size: geometry.size.height * 0.018, weight: .semibold))
-                                                        .italic()
-                                                        .foregroundColor(Color.white)
-                                                    Spacer()
-                                                }
-                                                .padding(.vertical, geometry.size.height * 0.001)
                                             }
-                                            .padding(.vertical, geometry.size.height * 0.02)
-                                            .background(Color(hex: 0x222222))
-                                            Divider()
-                                                .background(Color.white)
+                                        } else {
+                                            Spacer()
+                                            HStack {
+                                                Text("No previous assignment info.")
+                                                    .font(.system(size: geometry.size.height * 0.016, weight: .semibold))
+                                                    .foregroundColor(Color.white)
+                                                
+                                                Spacer()
+                                            }
+                                            Spacer()
                                             
                                         }
-                                    } else {
-                                        Spacer()
-                                        HStack {
-                                            Text("No previous assignment info.")
-                                                .font(.system(size: geometry.size.height * 0.016, weight: .semibold))
-                                                .foregroundColor(Color.white)
-                                                
-                                            Spacer()
-                                        }
-                                        Spacer()
-                                           
-                                   }
+                                    }
+                                }
+                                
+                                Spacer()
+                                
+                                Button(action: {
+                                    selectedDeviceID = ""
+                                    selectedDeviceLog = []
+                                }) {
+                                    Text("Close")
+                                        .font(.system(size: geometry.size.height * 0.02, weight: .bold))
+                                        .foregroundColor(Color(hex: 0x222222))
+                                        .padding()
+                                        .background(Color.white)
+                                        .cornerRadius(geometry.size.width * 0.01)
+                                        .shadow(color: .gray, radius: 5, x: 0, y: 0)
                                 }
                             }
-                            
-                            Spacer()
-                            
-                            Button(action: {
-                                selectedDeviceID = ""
-                                selectedDeviceLog = []
-                            }) {
-                                Text("Close")
-                                    .font(.system(size: geometry.size.height * 0.02, weight: .bold))
-                                    .foregroundColor(Color(hex: 0x222222))
-                                    .padding()
-                                    .background(Color.white)
-                                    .cornerRadius(geometry.size.width * 0.01)
-                                    .shadow(color: .gray, radius: 5, x: 0, y: 0)
-                            }
+                            .padding()
+                            .frame(height: geometry.size.height * 0.6)
+                            .frame(width: geometry.size.width * 0.8)
+                            .background(Color(hex: 0x222222))
+                            .border(Color(hex: 0xDFE6E9), width: geometry.size.width * 0.003)
+                            .cornerRadius(geometry.size.width * 0.01)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: geometry.size.width * 0.01)
+                                    .stroke(Color(hex: 0xDFE6E9).opacity(0.6), lineWidth: geometry.size.width * 0.004)
+                            )
+                            .shadow(color: .gray, radius: geometry.size.width * 0.004)
                         }
-                        .padding()
-                        .frame(height: geometry.size.height * 0.6)
-                        .frame(width: geometry.size.width * 0.8)
-                        .background(Color(hex: 0x222222))
-                        .border(Color(hex: 0xDFE6E9), width: geometry.size.width * 0.003)
-                        .cornerRadius(geometry.size.width * 0.01)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: geometry.size.width * 0.01)
-                                .stroke(Color(hex: 0xDFE6E9).opacity(0.6), lineWidth: geometry.size.width * 0.004)
-                        )
-                        .shadow(color: .gray, radius: geometry.size.width * 0.004)
                     }
                 }
                 .frame(height: geometry.size.height * 0.80)
@@ -367,14 +374,23 @@ struct DeviceManage: View {
     }
     
     private func getDeviceInfo() {
-        let url = URL(string: "http://172.20.10.2:5000/get-devices")!
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        guard let token = loadTokenFromKeychain() else {
+            return
+        }
+        
+        isLoading = true
         
         let requestBody: [String: Any] = [
             "orgID": authenticatedOrgID
         ]
+        
+        let url = URL(string: "http://172.20.10.2:5000/get-devices")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.httpBody = try? JSONSerialization.data(withJSONObject: requestBody)
+
         do {
             request.httpBody = try JSONSerialization.data(withJSONObject: requestBody, options: [])
         } catch {
@@ -410,6 +426,10 @@ struct DeviceManage: View {
             
             if response.statusCode == 200 {
                 do {
+                    DispatchQueue.main.async {
+                        isLoading = false
+                    }
+                    
                     let decodedResponse = try JSONDecoder().decode(DeviceInfoResponse.self, from: data)
                     DispatchQueue.main.async {
                         self.deviceInfo = decodedResponse.data
@@ -431,15 +451,22 @@ struct DeviceManage: View {
     }
     
     private func getSelectedDeviceInfo() {
-        let url = URL(string: "http://172.20.10.2:5000/get-selected-device-log")!
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        guard let token = loadTokenFromKeychain() else {
+            return
+        }
         
         let requestBody: [String: Any] = [
             "orgID": authenticatedOrgID,
             "devID": selectedDeviceID
         ]
+        
+        let url = URL(string: "http://172.20.10.2:5000/get-selected-device-log")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.httpBody = try? JSONSerialization.data(withJSONObject: requestBody)
+        
         do {
             request.httpBody = try JSONSerialization.data(withJSONObject: requestBody, options: [])
         } catch {
