@@ -37,7 +37,7 @@ struct LoginAuth: View {
                     
                     Spacer()
                 }
-                .padding(.leading, geometry.size.width * 0.01)
+                .padding(.leading, geometry.size.width * 0.06)
                 .padding(.vertical, 0)
                 
                 HStack {
