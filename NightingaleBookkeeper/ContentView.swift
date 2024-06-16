@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var currentView: AppView = .LoginAuth
+    @State private var currentView: AppView = .DeviceManage
     @State private var authenticatedUsername: String = ""
     @State private var authenticatedOrgID: String = ""
     @State private var selectedDeviceID: String = ""
@@ -27,12 +27,16 @@ struct ContentView: View {
                     }
             case .ResetAuth:
                 ResetAuth(currentView: $currentView)
+                    .onAppear { checkToken() }
             case .DeviceManage:
                 DeviceManage(currentView: $currentView, authenticatedUsername: $authenticatedUsername, authenticatedOrgID: $authenticatedOrgID, selectedDeviceID: $selectedDeviceID)
+                    .onAppear { checkToken() }
             case .AddDevice:
                 AddDevice(currentView: $currentView, authenticatedUsername: $authenticatedUsername, authenticatedOrgID: $authenticatedOrgID, selectedDeviceID: $selectedDeviceID)
+                    .onAppear { checkToken() }
             case .RemoveDevice:
                 RemoveDevice(currentView: $currentView, authenticatedUsername: $authenticatedUsername, authenticatedOrgID: $authenticatedOrgID, selectedDeviceID: $selectedDeviceID)
+                    .onAppear { checkToken() }
             }
         }
         .onAppear {

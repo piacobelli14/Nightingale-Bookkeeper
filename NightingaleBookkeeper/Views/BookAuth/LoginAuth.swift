@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct LoginAuth: View {
     @Binding var currentView: AppView
     @Binding var authenticatedUsername: String
