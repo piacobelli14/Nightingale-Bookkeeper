@@ -384,7 +384,7 @@ struct DeviceManage: View {
             "organizationID": authenticatedOrgID
         ]
         
-        let url = URL(string: "http://172.20.10.2:5000/get-devices")!
+        let url = URL(string: "https://nightingale-web-api.vercel.app/nightingale/api/get-devices")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -454,7 +454,7 @@ struct DeviceManage: View {
             "devID": selectedDeviceID
         ]
         
-        let url = URL(string: "http://172.20.10.2:5000/get-selected-device-log")!
+        let url = URL(string: "https://nightingale-web-api.vercel.app/nightingale/api/get-selected-device-log")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")

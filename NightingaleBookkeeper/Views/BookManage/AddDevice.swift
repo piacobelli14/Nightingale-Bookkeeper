@@ -202,7 +202,7 @@ struct AddDevice: View {
             "devID": newDevID,
         ]
 
-        let url = URL(string: "http://172.20.10.2:5000/add-device")!
+        let url = URL(string: "https://nightingale-web-api.vercel.app/nightingale/api/add-device")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
