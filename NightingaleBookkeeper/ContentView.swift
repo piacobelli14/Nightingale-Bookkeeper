@@ -46,6 +46,21 @@ struct ContentView: View {
             checkToken()
         }
     }
+
+    func checkToken() {
+        if let token = loadTokenFromKeychain() {
+            if isTokenExpired(token: token) {
+                deleteTokenFromKeychain()
+                isLoggedOut = true
+                currentView = .LoginAuth
+            } else {
+                decodeToken(token: token)
+            }
+        } else {
+            isLoggedOut = true
+            currentView = .LoginAuth
+        }
+    }
     
     func initializeView() {
         if let token = loadTokenFromKeychain(), !isTokenExpired(token: token) {
