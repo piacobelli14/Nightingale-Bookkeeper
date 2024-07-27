@@ -71,7 +71,8 @@ struct LoginAuth: View {
                                 .foregroundColor(Color.white)
                                 .opacity(0.8)
                                 .shadow(color: .gray.opacity(0.3), radius: 0, x: 0, y: 2)
-                                .padding(.leading, geometry.size.width * 0.005)
+                                .padding(.leading, geometry.size.width * 0.008)
+                                .padding(.bottom, geometry.size.height * 0.01)
                             Spacer()
                         }
                         
@@ -85,11 +86,11 @@ struct LoginAuth: View {
                                 .padding(.vertical, geometry.size.height * 0.016)
                                 .padding(.horizontal, geometry.size.width * 0.02)
                                 .background(Color(hex: 0xF5F5F5).opacity(0.9))
-                                .border(Color(hex: 0x504F51), width: geometry.size.width * 0.002)
+                                .border(Color.black.opacity(0.4), width: geometry.size.width * 0.004)
                                 .cornerRadius(geometry.size.height * 0.01)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: geometry.size.height * 0.01)
-                                        .stroke(Color(hex: 0x504F51), lineWidth: geometry.size.width * 0.002)
+                                        .stroke(Color.black.opacity(0.4), lineWidth: geometry.size.width * 0.008)
                                 )
                                 .frame(width: geometry.size.width * 0.7)
                                 .shadow(color: .gray.opacity(0.3), radius: 1, x: 0, y: 0)
@@ -133,7 +134,8 @@ struct LoginAuth: View {
                                 .foregroundColor(Color.white)
                                 .opacity(0.8)
                                 .shadow(color: .gray.opacity(0.3), radius: 0, x: 0, y: 2)
-                                .padding(.leading, geometry.size.width * 0.005)
+                                .padding(.leading, geometry.size.width * 0.008)
+                                .padding(.bottom, geometry.size.height * 0.01)
                             Spacer()
                         }
                         
@@ -149,11 +151,11 @@ struct LoginAuth: View {
                                         .padding(.vertical, geometry.size.height * 0.016)
                                         .padding(.horizontal, geometry.size.width * 0.02)
                                         .background(Color(hex: 0xF5F5F5).opacity(0.9))
-                                        .border(Color(hex: 0x504F51), width: geometry.size.width * 0.002)
+                                        .border(Color.black.opacity(0.4), width: geometry.size.width * 0.004)
                                         .cornerRadius(geometry.size.height * 0.01)
                                         .overlay(
                                             RoundedRectangle(cornerRadius: geometry.size.height * 0.01)
-                                                .stroke(Color(hex: 0x504F51), lineWidth: geometry.size.width * 0.002)
+                                                .stroke(Color.black.opacity(0.4), lineWidth: geometry.size.width * 0.008)
                                         )
                                         .frame(width: geometry.size.width * 0.7)
                                         .shadow(color: .gray.opacity(0.3), radius: 1, x: 0, y: 0)
@@ -168,11 +170,11 @@ struct LoginAuth: View {
                                         .padding(.vertical, geometry.size.height * 0.016)
                                         .padding(.horizontal, geometry.size.width * 0.02)
                                         .background(Color(hex: 0xF5F5F5).opacity(0.9))
-                                        .border(Color(hex: 0x504F51), width: geometry.size.width * 0.002)
+                                        .border(Color.black.opacity(0.4), width: geometry.size.width * 0.004)
                                         .cornerRadius(geometry.size.height * 0.01)
                                         .overlay(
                                             RoundedRectangle(cornerRadius: geometry.size.height * 0.01)
-                                                .stroke(Color(hex: 0x504F51), lineWidth: geometry.size.width * 0.002)
+                                                .stroke(Color.black.opacity(0.4), lineWidth: geometry.size.width * 0.008)
                                         )
                                         .frame(width: geometry.size.width * 0.7)
                                         .shadow(color: .gray.opacity(0.3), radius: 1, x: 0, y: 0)
