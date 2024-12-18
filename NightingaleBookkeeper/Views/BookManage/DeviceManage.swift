@@ -384,7 +384,7 @@ struct DeviceManage: View {
             "organizationID": authenticatedOrgID
         ]
         
-        let url = URL(string: "https://nightingale-health.duckdns.org/nightingale/api/get-devices")!
+        let url = URL(string: "https://www.nightingale-health.org/vektor/vektor-web-api/get-devices")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -454,7 +454,7 @@ struct DeviceManage: View {
             "devID": selectedDeviceID
         ]
         
-        let url = URL(string: "https://nightingale-health.duckdns.org/nightingale/api/get-selected-device-log")!
+        let url = URL(string: "https://www.nightingale-health.org/vektor/vektor-web-api/get-selected-device-log")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
